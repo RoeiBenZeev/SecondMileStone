@@ -10,8 +10,10 @@
 #include "CacheManager.h"
 class MyTestClientHandler : ClientHandler {
   public:
-    Solver solver;
-    CacheManager cm;
+    void handleClient() override;
+  private:
+    //Solver solver;
+    //CacheManager cm;
 };
 
 #endif //SECONDMILESTONE__MYTESTCLIENTHANDLER_H_
