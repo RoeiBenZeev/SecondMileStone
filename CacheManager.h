@@ -9,6 +9,9 @@ template <typename P,typename S>
 class CacheManager {
   public:
     virtual void insert(P,S) = 0;
+
+    virtual S get(P) = 0;
+
 };
 
 #endif //SECONDMILESTONE__CACHEMANAGER_H_

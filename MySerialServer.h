@@ -25,10 +25,12 @@
 #include <cstring>
 
 
-class MySerialServer : server_side::Server {
+class MySerialServer : public server_side::Server {
   public:
     void open(int, ClientHandler*) override;
     void stop();
+
+    MySerialServer();
 };
 
 #endif //SECONDMILESTONE__MYSERIALSERVER_H_

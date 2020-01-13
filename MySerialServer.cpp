@@ -60,3 +60,5 @@ void MySerialServer::open(int port, ClientHandler* ch) {
 void MySerialServer::stop() {
 
 }
+
+MySerialServer::MySerialServer() {}
