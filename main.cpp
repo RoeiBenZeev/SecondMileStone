@@ -1,3 +1,4 @@
+/*
 //
 // Created by Daniela Stepanov on 11/16/19.
 //
@@ -280,49 +281,50 @@ int main() {
 
 
 
+*/
 
 
-//#include <iostream>
-//#include "Server.h"
-//#include "MySerialServer.h"
-//#include "MyTestClientHandler.h"
-//#include "StringReverser.h"
-//#include "FileCacheManager.h"
-//
-//using namespace server_side;
-//
-//namespace boot {
-//    class Main {
-//    public:
-//        Main(){};
-//        void main(int argc, char *argv[]) {
-//            Server *myServer = new MySerialServer();
-//            Solver<string, string> *solver = new StringReverser();
-//            CacheManager<string, string> *cm = new FileCacheManager<string, string>(10); //todo: what should be the size?
-//            ClientHandler *clientHandler = new MyTestClientHandler(solver,cm);
-//
-//            clientHandler->handleClient("asaf1234\n");
-//
-//            //myServer->open(101010, clientHandler);
-//        }
-//    };
-//}
-//
-//using namespace boot;
-//int main(int argc, char *argv[]) {
-////    Main* m = new Main();
-////    m->main(argc,argv);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    return 0;
-//}
+#include <iostream>
+#include "Server.h"
+#include "MySerialServer.h"
+#include "MyTestClientHandler.h"
+#include "StringReverser.h"
+#include "FileCacheManager.h"
+
+using namespace server_side;
+
+namespace boot {
+    class Main {
+    public:
+        Main(){};
+        void main(int argc, char *argv[]) {
+            Server *myServer = new MySerialServer();
+            Solver<string, string> *solver = new StringReverser();
+            CacheManager<string, string> *cm = new FileCacheManager<string, string>(10); //todo: what should be the size?
+            ClientHandler *clientHandler = new MyTestClientHandler(solver,cm);
+
+            clientHandler->handleClient("asaf1234\n");
+
+            //myServer->open(101010, clientHandler);
+        }
+    };
+}
+
+using namespace boot;
+int main(int argc, char *argv[]) {
+//    Main* m = new Main();
+//    m->main(argc,argv);
+
+
+
+
+
+
+
+
+
+
+
+
+    return 0;
+}
