@@ -16,7 +16,7 @@
 #include <functional>
 #include "CacheManager.h"
 using namespace std;
-
+//global to run the loop
 template <typename P,typename S>
 class FileCacheManager : public CacheManager<P,S> {
     unsigned int cacheSize;
@@ -103,7 +103,10 @@ void FileCacheManager<P,S>::addToMap(P key, S value) {
 template <typename P,typename S>
 void FileCacheManager<P,S>::writeToFile(P key, S obj) {
     //open a stream for writing
-    std::ofstream writer(S::class_name + key, std::ios::binary | std::ofstream::trunc);
+    //todo solve the class name
+    //std::ofstream writer(S::class_name + key, std::ios::binary | std::ofstream::trunc);
+    std::ofstream writer(key, std::ios::binary | std::ofstream::trunc);
+
     if (!writer || !writer.is_open()) {
         throw "error happened in opening file for writing";
     }
@@ -123,9 +126,13 @@ S FileCacheManager<P,S>::get(P key) {
         //return our key object
         return cacheMemory[key].first;
     } else {
-        string b = S::class_name + key;
+        //todo solve the class_name while writing and saving objct.
+        //string b = S::class_name + key;
+        string b = key;
 
-        std::ifstream reader(S::class_name + key, std::ios::binary);
+        //todo solve the class_name while writing and saving objct.
+        //std::ifstream reader(S::class_name + key, std::ios::binary);
+        std::ifstream reader(key, std::ios::binary);
         if (!reader || !reader.is_open()) {
             throw "No such object";
         }
