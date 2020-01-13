@@ -5,11 +5,11 @@
 #ifndef SECONDMILESTONE__SOLVER_H_
 #define SECONDMILESTONE__SOLVER_H_
 
-template <typename T>
 
+template <typename P, typename S>
 class Solver {
   public:
-    T solve();
+    virtual S solve(P problem) = 0;
 };
 
 #endif //SECONDMILESTONE__SOLVER_H_
