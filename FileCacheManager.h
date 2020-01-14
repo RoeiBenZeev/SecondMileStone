@@ -49,7 +49,7 @@ template <typename P,typename S>
 
 //insert method
 void FileCacheManager<P,S>::insert(P key, S obj) {
-    key = hashString(key);
+    //key = hashString(key);
 
     //check if the key is already in the cache
     if(this->containsKey(key)) {
@@ -76,7 +76,7 @@ template <typename P,typename S>
 
 //update our cache order for existing key
 void FileCacheManager<P,S>::updateCache(P key) {
-    key = hashString(key);
+    //key = hashString(key);
     //delete current key recently used from prev location.
     myList.erase(cacheMemory[key].second);
     //our last used key will be first now.
@@ -94,7 +94,7 @@ template <typename P,typename S>
 
 //check if out map contains th key.
 bool FileCacheManager<P,S>::containsKey(P key) {
-    key = hashString(key);
+    //key = hashString(key);
     typename std::unordered_map<std::string, std::pair<string,
     typename list<string>::iterator>>::iterator it
         = cacheMemory.find(key);
@@ -106,14 +106,14 @@ bool FileCacheManager<P,S>::containsKey(P key) {
 template <typename P,typename S>
 //add key value to the map with iterator.
 void FileCacheManager<P,S>::addToMap(P key, S value) {
-    key = hashString(key);
+    //key = hashString(key);
     myList.push_front(key);
     list<string>::iterator it = myList.begin();
     cacheMemory[key] = {value, it};
 }
 template <typename P,typename S>
 void FileCacheManager<P,S>::writeToFile(P key, S obj) {
-    key = hashString(key);
+    //key = hashString(key);
     //open a stream for writing
     std::ofstream writer(key+".txt",std::ios::binary | std::ofstream::trunc);
     if(!writer || !writer.is_open()) {
@@ -127,12 +127,12 @@ void FileCacheManager<P,S>::writeToFile(P key, S obj) {
 }
 template <typename P,typename S>
 string FileCacheManager<P,S>::get(P key) {
-    key = hashString(key);
+    //key = hashString(key);
     //this key is in the cache
     if(this->containsKey(key)) {
         //we updated the LRU algorithm
         updateCache(key);
-        cout << "the solution is in the cache"<< endl;
+        cout << "the solution is in the cache"<< std::flush;
         //return our key object
         return cacheMemory[key].first;
     } else {
@@ -157,7 +157,7 @@ string FileCacheManager<P,S>::get(P key) {
             addToMap(key, buffer);
         }
         reader.close();
-        cout << "the solution is in the files"<< endl;
+        cout << "the solution is in the files"<< std::flush;
         //return wanted object
         return buffer;
     }

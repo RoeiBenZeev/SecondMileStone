@@ -303,7 +303,7 @@ namespace boot {
             CacheManager<string, string> *cm = new FileCacheManager<string,string>(1); //todo: what should be the size?
             ClientHandler *clientHandler = new MyTestClientHandler(solver,cm);
 
-            myServer->open(5401,clientHandler);
+            myServer->open(5402,clientHandler);
 
         }
     };

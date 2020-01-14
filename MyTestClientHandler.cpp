@@ -12,30 +12,34 @@ void MyTestClientHandler::handleClient(int clientSocket) {
         char dataFromClient[1024] = {0};
         //get data from client.
         read(clientSocket, dataFromClient, 1024);
-        cout << dataFromClient << endl;
+        cout << dataFromClient << std::flush;
+        //making a string with out char array buffer
         string problem(dataFromClient);
         char delimiter = '\r';
         size_t pos = problem.find(delimiter);
         problem = problem.substr(0, pos);
         cout << problem << endl;
-        //todo fix string recieve
+        //if client send end we will terminate the connection.
         if (problem == "end") {
             break;
         }
+        //patch to handle the timeout
+        if(problem == "") {
+            continue;
+        }
+
 
         string solution;
-        //check if solution is in cache
+        //check if solution is in the database
         try {
             solution = cacheManager->get(problem);
+            //if the solution is not in the data base we will solve it
         } catch (const char *e) {
             solution = solver->solve(problem);
             cout << "we solve using the solver" <<solution << endl;
+            //inserting the new solution to the data base
             cacheManager->insert(problem, solution);
         }
-
-        /*
-         * solve the problem here
-         */
 
         //return the solution
         char *h = new char[solution.length() + 1];

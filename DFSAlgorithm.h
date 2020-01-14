@@ -1,0 +1,12 @@
+//
+// Created by roei on 14/01/2020.
+//
+
+#ifndef SECONDMILESTONE__DFSALGORITHM_H_
+#define SECONDMILESTONE__DFSALGORITHM_H_
+
+class DFSAlgorithm {
+
+};
+
+#endif //SECONDMILESTONE__DFSALGORITHM_H_
