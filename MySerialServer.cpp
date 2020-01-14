@@ -3,7 +3,11 @@
 //
 
 #include "MySerialServer.h"
+#include "FileCacheManager.h"
+#include "MyTestClientHandler.h"
+bool keepRun = true;
 void MySerialServer::open(int port, ClientHandler* ch) {
+
     // the port parameter have to be const.
     const int PORT = port;
     //create socket
@@ -30,6 +34,23 @@ void MySerialServer::open(int port, ClientHandler* ch) {
         throw "-2";
     }
 
+    //loop to accept clients on by one
+    while(keepRun) {
+        /*
+         * use thread here no be able to make small change for parallel clients in the near future.
+         */
+        thread clientThread(start, ch ,socketfd,address);
+        //thread clientThread2(start, ch ,socketfd,address);
+        clientThread.join();
+        //close previouse client connection
+    }
+}
+
+
+void MySerialServer::stop() {
+
+}
+void MySerialServer::start(ClientHandler* ch, int socketfd, sockaddr_in address) {
     //making socket listen to the port
     if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
         std::cerr << "Error during listening command" << std::endl;
@@ -39,7 +60,10 @@ void MySerialServer::open(int port, ClientHandler* ch) {
         std::cout << "Server is now listening ..." << std::endl;
     }
     int addrlen = sizeof(address);
-
+    //time out definition, if there is no connection for 10 seconds.
+//    struct timeval tv;
+//    tv.tv_sec = 15;
+//    setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
     // accepting a client
     int client_socket = accept(socketfd, (struct sockaddr *) &address,
                                (socklen_t *) &addrlen);
@@ -52,13 +76,9 @@ void MySerialServer::open(int port, ClientHandler* ch) {
         throw "-4";
     }
 
-    close(socketfd); //closing the listening socket
-
-    //std::thread threadServer(receiveData, client_socket);
-    //threadServer.detach();
-}
-void MySerialServer::stop() {
-
+    ch->handleClient(client_socket);
+    //the client socket is closed after handling the client.
+    close(client_socket);
 }
 
 MySerialServer::MySerialServer() {}

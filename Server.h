@@ -5,6 +5,7 @@
 #ifndef SECONDMILESTONE__SERVER_H_
 #define SECONDMILESTONE__SERVER_H_
 #include "ClientHandler.h"
+
 namespace server_side {
 class Server {
   public:

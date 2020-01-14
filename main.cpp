@@ -300,20 +300,19 @@ namespace boot {
         void main(int argc, char *argv[]) {
             Server *myServer = new MySerialServer();
             Solver<string, string> *solver = new StringReverser();
-            CacheManager<string, string> *cm = new FileCacheManager<string, string>(10); //todo: what should be the size?
+            CacheManager<string, string> *cm = new FileCacheManager(1); //todo: what should be the size?
             ClientHandler *clientHandler = new MyTestClientHandler(solver,cm);
 
-            clientHandler->handleClient("asaf1234\n");
+            myServer->open(5401,clientHandler);
 
-            //myServer->open(101010, clientHandler);
         }
     };
 }
 
 using namespace boot;
 int main(int argc, char *argv[]) {
-//    Main* m = new Main();
-//    m->main(argc,argv);
+    Main* m = new Main();
+    m->main(argc,argv);
 
 
 

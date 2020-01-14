@@ -24,13 +24,16 @@
 #include <iostream>
 #include <cstring>
 
+extern bool keepRun;
 
 class MySerialServer : public server_side::Server {
   public:
     void open(int, ClientHandler*) override;
     void stop();
-
     MySerialServer();
+
+  private:
+    static void start(ClientHandler*, int, sockaddr_in);
 };
 
 #endif //SECONDMILESTONE__MYSERIALSERVER_H_

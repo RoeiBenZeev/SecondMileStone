@@ -12,7 +12,7 @@ using namespace std;
 
 class ClientHandler {
   public:
-    virtual void handleClient(string problem) = 0;
+    virtual void handleClient(int) = 0;
 };
 
 #endif //SECONDMILESTONE__CLIENTHANDLER_H_
