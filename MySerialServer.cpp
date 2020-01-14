@@ -39,10 +39,16 @@ void MySerialServer::open(int port, ClientHandler* ch) {
         /*
          * use thread here no be able to make small change for parallel clients in the near future.
          */
-        thread clientThread(start, ch ,socketfd,address);
-        //thread clientThread2(start, ch ,socketfd,address);
-        clientThread.join();
-        //close previouse client connection
+        //try and catch , for time out exception.
+        try {
+            thread clientThread(start, ch, socketfd, address);
+            //thread clientThread2(start, ch ,socketfd,address);
+            clientThread.join();
+        } catch(char* e) {
+
+        }
+        //close server socket
+        close(socketfd);
     }
 }
 
@@ -61,9 +67,9 @@ void MySerialServer::start(ClientHandler* ch, int socketfd, sockaddr_in address)
     }
     int addrlen = sizeof(address);
     //time out definition, if there is no connection for 10 seconds.
-//    struct timeval tv;
-//    tv.tv_sec = 15;
-//    setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+    struct timeval tv;
+    tv.tv_sec = 15;
+    setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
     // accepting a client
     int client_socket = accept(socketfd, (struct sockaddr *) &address,
                                (socklen_t *) &addrlen);

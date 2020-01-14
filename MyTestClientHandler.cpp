@@ -29,7 +29,7 @@ void MyTestClientHandler::handleClient(int clientSocket) {
             solution = cacheManager->get(problem);
         } catch (const char *e) {
             solution = solver->solve(problem);
-            cout << solution;
+            cout << "we solve using the solver" <<solution << endl;
             cacheManager->insert(problem, solution);
         }
 
