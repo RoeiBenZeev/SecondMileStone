@@ -5,8 +5,17 @@
 #ifndef SECONDMILESTONE__BESTFSALGORITHM_H_
 #define SECONDMILESTONE__BESTFSALGORITHM_H_
 
-class BestFSAlgorithm {
+#include "Searcher.h"
+template <typename E>
+class BestFSAlgorithm : public Searcher<E> {
+  public:
+    string Search(Searchable<E> problem) override {
 
+    }
+    int getEvaluatedNodes() override {
+
+    }
 };
+
 
 #endif //SECONDMILESTONE__BESTFSALGORITHM_H_

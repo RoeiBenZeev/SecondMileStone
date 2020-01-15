@@ -6,7 +6,10 @@
 #define SECONDMILESTONE__VERTEX_H_
 
 class Vertex {
-
+  private:
+    int row;
+    int column;
+    int cost;
 };
 
 #endif //SECONDMILESTONE__VERTEX_H_

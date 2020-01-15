@@ -5,9 +5,17 @@
 #ifndef SECONDMILESTONE__SEARCHER_H_
 #define SECONDMILESTONE__SEARCHER_H_
 
-class Searcher {
+#include <queue>
+#include "ISearcher.h"
+template <typename E>
+class Searcher : public ISearcher<E> {
+
+  protected:
+    std::priority_queue<State<E>> q;
+    int evaluatedNodes;
 
   public:
+    virtual int getEvaluatedNodes() = 0; //todo: check abstract
 
 };
 
