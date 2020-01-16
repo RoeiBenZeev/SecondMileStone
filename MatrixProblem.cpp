@@ -6,13 +6,96 @@
 
 State<Vertex *> *MatrixProblem::getInitialState() {
     return startState;
-
 }
-bool MatrixProblem::isGoalState(State<Vertex*>* state) {
-    //need to implement equals function
+bool MatrixProblem::isGoalState(State<Vertex *> *state) {
+    //the pointer point on same State
+    if(state == goalState) {
+        return true;
+    }
+    //the pointer point on different states
+    else {
+        return false;
+    }
 }
 vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *state) {
-    //have to be implemented
+    vector<State<Vertex *> *> stateSuccessors;
+    //getting this state i,j indexes
+    int i = state->GetState()->getLocation().first;
+    int j = state->GetState()->getLocation().second;
+    //we can have a successor above this state.
+    if (!(i - 1 < 0)) {
+        //check if a State indexes are already created.
+        auto got = alreadyCreatedStates.find(pair<int, int>(i - 1, j));
+        //if the state already created we will return it.
+        if (got != alreadyCreatedStates.end()) {
+            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i - 1, j)]);
+            cout << "We took this from map " << i-1 << "," << j << endl;
+        }
+            //else a new State is created
+        else {
+            State<Vertex *>* upState = new State<Vertex *>(new Vertex(i - 1, j, matrix[i - 1][j]));
+            stateSuccessors.push_back(upState);
+            //add new State made to States map.
+            alreadyCreatedStates[upState->GetState()->getLocation()] = upState;
+            cout << "We made new one at" << i-1 << "," << j << endl;
+
+        }
+    }
+    //we can have a successor under this state.
+    if (!(i + 1 > rowNum - 1)) {
+        //check if a State indexes are already created.
+        auto got = alreadyCreatedStates.find(pair<int, int>(i + 1, j));
+        //if the state already created we will return it.
+        if (got != alreadyCreatedStates.end()) {
+            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i + 1, j)]);
+            cout << "We took this from map " << i+1 << "," << j << endl;
+        }
+            //else a new State is created
+        else {
+            State<Vertex *>* downState =new State<Vertex *>(new Vertex(i + 1, j, matrix[i + 1][j]));
+            stateSuccessors.push_back(downState);
+            //add new State made to States map.
+            alreadyCreatedStates[downState->GetState()->getLocation()] = downState;
+            cout << "We made new one" << i+1 << "," << j << endl;
+        }
+    }
+    //we can have a successor left size this state.
+    if (!(j - 1 < 0)) {
+        //check if a State indexes are already created.
+        auto got = alreadyCreatedStates.find(pair<int, int>(i, j - 1));
+        //if the state already created we will return it.
+        if (got != alreadyCreatedStates.end()) {
+            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i, j - 1)]);
+            cout << "We took this from map " << i << "," << j-1 << endl;
+        }
+            //else a new State is created
+        else {
+            State<Vertex *>* leftState = new State<Vertex *>(new Vertex(i, j - 1, matrix[i][j - 1]));
+            stateSuccessors.push_back(leftState);
+            //add new State made to States map.
+            alreadyCreatedStates[leftState->GetState()->getLocation()] = leftState;
+            cout << "We made new one" << i << "," << j-1 << endl;
+        }
+    }
+    //we can have a successor right side this state.
+    if (!(j + 1 > columnNum - 1)) {
+        //check if a State indexes are already created.
+        auto got = alreadyCreatedStates.find(pair<int, int>(i, j + 1));
+        //if the state already created we will return it.
+        if (got != alreadyCreatedStates.end()) {
+            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i, j + 1)]);
+            cout << "We took this from map" << i << "," << j+1 << endl;
+        }
+            //else a new State is created
+        else {
+            State<Vertex *>* rightState = new State<Vertex *>(new Vertex(i, j + 1, matrix[i][j + 1]));
+            stateSuccessors.push_back(rightState);
+            //add new State made to States map.
+            alreadyCreatedStates[rightState->GetState()->getLocation()] = rightState;
+            cout << "We made new one" << i << "," << j+1 << endl;
+        }
+    }
+    return stateSuccessors;
 }
 //constructor
 MatrixProblem::MatrixProblem(vector<string> problemData) {
@@ -42,38 +125,38 @@ void MatrixProblem::initialMatrix(vector<string> matrixData) {
     columnNum = getColumnNum(matrixData.front());
     //matrix row num is the number of items we have in the vector
     rowNum = matrixData.size();
-    vector<vector<int>> vec(rowNum, vector<int> (columnNum, 0));
+    vector<vector<int>> vec(rowNum, vector<int>(columnNum, 0));
     //initial local indexes
     int i = 0;
     int j = 0;
     string cell;
     //going over matrix data rows
-    for(string rowVec:matrixData) {
+    for (string rowVec:matrixData) {
         //istringstream to seperate string by delimiter
         istringstream f(rowVec);
         //initial column value each iteration
-        j=0;
+        j = 0;
         //going for each column in the rowVec
-        while(getline(f, cell, ',')){
+        while (getline(f, cell, ',')) {
             vec[i][j] = stoi(cell);
-            j+=1;
+            j += 1;
         }
         //check if this column size is valid
         if (j > columnNum) {
-            cout << "To many columns"<< endl;
+            cout << "To many columns" << endl;
         }
-        i+=1;
+        i += 1;
     }
     //check if rows number is valid
     if (i > rowNum) {
-        cout << "To many rows"<< endl;
+        cout << "To many rows" << endl;
     }
     matrix = vec;
     //todo delete this test
     cout << "Test initial matrix" << endl;
-    for(vector<int> rowVec:matrix) {
-        for( int c : rowVec) {
-            cout<< c << ",";
+    for (vector<int> rowVec:matrix) {
+        for (int c : rowVec) {
+            cout << c << ",";
         }
         cout << endl;
     }
@@ -89,14 +172,14 @@ void MatrixProblem::initialStart(string s) {
     //getting first argument by ',' delimiter
     getline(f, digit, ',');
     //converting string to int
-    i = stoi(s);
+    i = stoi(digit);
     //getting second argument by ',' delimiter
     getline(f, digit, ',');
     //converting string to int
-    j = stoi(s);
+    j = stoi(digit);
     //initializing state vertex
-    Vertex* startPoint = new Vertex(i,j,matrix[i][j]);
-    startState = new State<Vertex*>(startPoint);
+    Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
+    startState = new State<Vertex *>(startPoint);
     alreadyCreatedStates[startState->GetState()->getLocation()] = startState;
 
 }
@@ -111,19 +194,19 @@ void MatrixProblem::initialGoal(string s) {
     //getting first argument by ',' delimiter
     getline(f, digit, ',');
     //converting string to int
-    i = stoi(s);
+    i = stoi(digit);
     //getting second argument by ',' delimiter
     getline(f, digit, ',');
     //converting string to int
-    j = stoi(s);
+    j = stoi(digit);
     //initializing state vertex
-    Vertex* startPoint = new Vertex(i,j,matrix[i][j]);
-    goalState = new State<Vertex*>(startPoint);
+    Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
+    goalState = new State<Vertex *>(startPoint);
     alreadyCreatedStates[goalState->GetState()->getLocation()] = goalState;
 }
 int MatrixProblem::getColumnNum(string row) {
     //counting number of items seperate by ',' in the line
-    int counter=0;
+    int counter = 0;
     string temp;
     istringstream f(row);
     while (getline(f, temp, ',')) {

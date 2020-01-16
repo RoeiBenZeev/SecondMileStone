@@ -9,10 +9,18 @@
 #include <string>
 
 using namespace std;
-
-class SearchSolverAdapter : public Solver<MatrixProblem,string> {
+template <typename P, typename S>
+class SearchSolverAdapter : public Solver<P,S> {
   private:
-
+    Solver<P,S>* solver;
+    P* problem;
+  public:
+    //solve function call solver inner object to run his solve method.
+    S solve(P problem) override {
+        solver->solve(problem);
+    }
+    //constructor
+    SearchSolverAdapter(const Solver<P,S> *solver, P* problem) : solver(solver), problem(problem) {}
 };
 
 #endif //SECONDMILESTONE__SEARCHSOLVERADAPTER_H_
