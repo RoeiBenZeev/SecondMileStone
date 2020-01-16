@@ -17,6 +17,13 @@ bool MatrixProblem::isGoalState(State<Vertex *> *state) {
         return false;
     }
 }
+/*
+ * this function check 4 directions possible successors and return all  successors can be reached from
+ * a given state.
+ * We repeat almost same code 4 times , because each direction has different argument , so it cant be dont without makeing
+ * the code hard to read.
+ */
+//todo delete prints
 vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *state) {
     vector<State<Vertex *> *> stateSuccessors;
     //getting this state i,j indexes
@@ -106,16 +113,22 @@ MatrixProblem::MatrixProblem(vector<string> problemData) {
     //first i get the information into buffers so i can initial matrix before states.
     string startString;
     string goalString;
+
     //first the last item is the goal state
     goalString = problemData.back();
+
     //then we pop the goal state to get the start state
     problemData.pop_back();
+
     //then our start is now in the end
     startString = problemData.back();
+
     //then we pop the start state to get the matrix information
     problemData.pop_back();
+
     //now we have the matrix information left, we can initial matrix
     initialMatrix(problemData);
+
     //then we can initial start and goal states
     initialStart(startString);
     initialGoal(goalString);
@@ -129,11 +142,13 @@ void MatrixProblem::initialMatrix(vector<string> matrixData) {
     columnNum = getColumnNum(matrixData.front());
     //matrix row num is the number of items we have in the vector
     rowNum = matrixData.size();
+
     vector<vector<int>> vec(rowNum, vector<int>(columnNum, 0));
     //initial local indexes
     int i = 0;
     int j = 0;
     string cell;
+
     //going over matrix data rows
     for (string rowVec:matrixData) {
         //istringstream to seperate string by delimiter
@@ -146,15 +161,17 @@ void MatrixProblem::initialMatrix(vector<string> matrixData) {
             j += 1;
         }
         //check if this column size is valid
-        if (j > columnNum) {
-            cout << "To many columns" << endl;
+        if (j != columnNum) {
+            cout << "To many or less columns" << endl;
         }
         i += 1;
     }
+
     //check if rows number is valid
-    if (i > rowNum) {
-        cout << "To many rows" << endl;
+    if (i != rowNum) {
+        cout << "To many or less rows" << endl;
     }
+
     matrix = vec;
     //todo delete this test
     cout << "Test initial matrix" << endl;
@@ -208,6 +225,9 @@ void MatrixProblem::initialGoal(string s) {
     goalState = new State<Vertex *>(startPoint);
     alreadyCreatedStates[goalState->GetState()->getLocation()] = goalState;
 }
+/*
+ * this function count a row length which is the number of our columns
+ */
 int MatrixProblem::getColumnNum(string row) {
     //counting number of items seperate by ',' in the line
     int counter = 0;
