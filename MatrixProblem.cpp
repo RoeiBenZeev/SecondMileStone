@@ -23,7 +23,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
     int i = state->GetState()->getLocation().first;
     int j = state->GetState()->getLocation().second;
     //we can have a successor above this state.
-    if (!(i - 1 < 0)) {
+    //if this cell value is -1 this is a blocking cell
+    if (i - 1 >= 0 && (matrix[i - 1][j] != -1)) {
         //check if a State indexes are already created.
         auto got = alreadyCreatedStates.find(pair<int, int>(i - 1, j));
         //if the state already created we will return it.
@@ -42,7 +43,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
     }
     //we can have a successor under this state.
-    if (!(i + 1 > rowNum - 1)) {
+    //if this cell value is -1 this is a blocking cell
+    if ((!i + 1 <= rowNum - 1) && (matrix[i + 1][j] != -1)) {
         //check if a State indexes are already created.
         auto got = alreadyCreatedStates.find(pair<int, int>(i + 1, j));
         //if the state already created we will return it.
@@ -60,7 +62,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
     }
     //we can have a successor left size this state.
-    if (!(j - 1 < 0)) {
+    //if this cell value is -1 this is a blocking cell
+    if ((j - 1 >= 0) && (matrix[i][j - 1] != -1)) {
         //check if a State indexes are already created.
         auto got = alreadyCreatedStates.find(pair<int, int>(i, j - 1));
         //if the state already created we will return it.
@@ -78,7 +81,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
     }
     //we can have a successor right side this state.
-    if (!(j + 1 > columnNum - 1)) {
+    //if this cell value is -1 this is a blocking cell
+    if ((j + 1 <= columnNum - 1) && (matrix[i][j - 1] != -1)) {
         //check if a State indexes are already created.
         auto got = alreadyCreatedStates.find(pair<int, int>(i, j + 1));
         //if the state already created we will return it.

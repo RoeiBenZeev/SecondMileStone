@@ -37,7 +37,8 @@ State<E>::State(E state, int thisCost, State<E> *came_from) : state(state), came
 }
 template<typename E>
 State<E>::State(E state):state(state) {
-
+    totalCost = 0;
+    cameFrom = nullptr;
 }
 template<typename E>
 E State<E>::GetState() const {
