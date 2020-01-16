@@ -14,6 +14,8 @@ class State {
     E GetState() const;
     int GetTotalCost() const;
     State<E> *GetCameFrom() const;
+    void SetTotalCost(int total_cost);
+    void SetCameFrom(State<E> *came_from);
 
     State(E state, int total_cost, State<E> *came_from);
     State(E state);
@@ -40,6 +42,14 @@ State<E>::State(E state):state(state) {
 template<typename E>
 E State<E>::GetState() const {
     return state;
+}
+template<typename E>
+void State<E>::SetTotalCost(int total_cost) {
+    totalCost = total_cost;
+}
+template<typename E>
+void State<E>::SetCameFrom(State<E> *came_from) {
+    cameFrom = came_from;
 }
 
 #endif //SECONDMILESTONE__STATE_H_
