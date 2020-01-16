@@ -29,6 +29,7 @@ class MyTestClientHandler : public ClientHandler {
   private:
     Solver<string, string> *solver;
     CacheManager<string, string> *cacheManager;
+
 };
 
 #endif //SECONDMILESTONE__MYTESTCLIENTHANDLER_H_

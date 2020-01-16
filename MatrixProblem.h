@@ -47,3 +47,4 @@ class MatrixProblem : public Searchable<Vertex*>  {
 };
 
 #endif //SECONDMILESTONE__MATRIXPROBLEM_H_
+
