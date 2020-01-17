@@ -29,35 +29,36 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
     //getting this state i,j indexes
     int i = state->GetState()->getLocation().first;
     int j = state->GetState()->getLocation().second;
-    //we can have a successor above this state.
+
+    //we can have a successor right side this state.
     //if this cell value is -1 this is a blocking cell
-    if (i - 1 >= 0 && (matrix[i - 1][j] != -1)) {
+    if ((j + 1 <= columnNum - 1) && (matrix[i][j + 1] != -1)) {
         //check if a State indexes are already created.
-        auto got = alreadyCreatedStates.find(pair<int, int>(i - 1, j));
+        auto got = alreadyCreatedStates.find(pair<int, int>(i, j + 1));
         //if the state already created we will return it.
         if (got != alreadyCreatedStates.end()) {
-            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i - 1, j)]);
-            cout << "We took this from map " << i-1 << "," << j << endl;
+            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i, j + 1)]);
+            //cout << "We took this from map" << i << "," << j+1 << endl;
         }
             //else a new State is created
         else {
-            State<Vertex *>* upState = new State<Vertex *>(new Vertex(i - 1, j, matrix[i - 1][j]));
-            stateSuccessors.push_back(upState);
+            State<Vertex *>* rightState = new State<Vertex *>(new Vertex(i, j + 1, matrix[i][j + 1]));
+            stateSuccessors.push_back(rightState);
             //add new State made to States map.
-            alreadyCreatedStates[upState->GetState()->getLocation()] = upState;
-            cout << "We made new one at" << i-1 << "," << j << endl;
-
+            alreadyCreatedStates[rightState->GetState()->getLocation()] = rightState;
+            //cout << "We made new one" << i << "," << j+1 << endl;
         }
     }
+
     //we can have a successor under this state.
     //if this cell value is -1 this is a blocking cell
-    if ((!i + 1 <= rowNum - 1) && (matrix[i + 1][j] != -1)) {
+    if (i + 1 <= rowNum - 1 && (matrix[i + 1][j] != -1)) {
         //check if a State indexes are already created.
         auto got = alreadyCreatedStates.find(pair<int, int>(i + 1, j));
         //if the state already created we will return it.
         if (got != alreadyCreatedStates.end()) {
             stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i + 1, j)]);
-            cout << "We took this from map " << i+1 << "," << j << endl;
+            //cout << "We took this from map " << i+1 << "," << j << endl;
         }
             //else a new State is created
         else {
@@ -65,9 +66,10 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
             stateSuccessors.push_back(downState);
             //add new State made to States map.
             alreadyCreatedStates[downState->GetState()->getLocation()] = downState;
-            cout << "We made new one" << i+1 << "," << j << endl;
+            // cout << "We made new one" << i+1 << "," << j << endl;
         }
     }
+
     //we can have a successor left size this state.
     //if this cell value is -1 this is a blocking cell
     if ((j - 1 >= 0) && (matrix[i][j - 1] != -1)) {
@@ -76,7 +78,7 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         //if the state already created we will return it.
         if (got != alreadyCreatedStates.end()) {
             stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i, j - 1)]);
-            cout << "We took this from map " << i << "," << j-1 << endl;
+            //cout << "We took this from map " << i << "," << j-1 << endl;
         }
             //else a new State is created
         else {
@@ -84,28 +86,32 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
             stateSuccessors.push_back(leftState);
             //add new State made to States map.
             alreadyCreatedStates[leftState->GetState()->getLocation()] = leftState;
-            cout << "We made new one" << i << "," << j-1 << endl;
+            //cout << "We made new one" << i << "," << j-1 << endl;
         }
     }
-    //we can have a successor right side this state.
+
+    //we can have a successor above this state.
     //if this cell value is -1 this is a blocking cell
-    if ((j + 1 <= columnNum - 1) && (matrix[i][j - 1] != -1)) {
+    if (i - 1 >= 0 && (matrix[i - 1][j] != -1)) {
         //check if a State indexes are already created.
-        auto got = alreadyCreatedStates.find(pair<int, int>(i, j + 1));
+        auto got = alreadyCreatedStates.find(pair<int, int>(i - 1, j));
         //if the state already created we will return it.
         if (got != alreadyCreatedStates.end()) {
-            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i, j + 1)]);
-            cout << "We took this from map" << i << "," << j+1 << endl;
+            stateSuccessors.push_back(alreadyCreatedStates[pair<int, int>(i - 1, j)]);
+            //cout << "We took this from map " << i-1 << "," << j << endl;
         }
             //else a new State is created
         else {
-            State<Vertex *>* rightState = new State<Vertex *>(new Vertex(i, j + 1, matrix[i][j + 1]));
-            stateSuccessors.push_back(rightState);
+            State<Vertex *>* upState = new State<Vertex *>(new Vertex(i - 1, j, matrix[i - 1][j]));
+            stateSuccessors.push_back(upState);
             //add new State made to States map.
-            alreadyCreatedStates[rightState->GetState()->getLocation()] = rightState;
-            cout << "We made new one" << i << "," << j+1 << endl;
+            alreadyCreatedStates[upState->GetState()->getLocation()] = upState;
+            //cout << "We made new one at" << i-1 << "," << j << endl;
+
         }
     }
+
+
     return stateSuccessors;
 }
 //constructor
@@ -174,13 +180,13 @@ void MatrixProblem::initialMatrix(vector<string> matrixData) {
 
     matrix = vec;
     //todo delete this test
-    cout << "Test initial matrix" << endl;
-    for (vector<int> rowVec:matrix) {
-        for (int c : rowVec) {
-            cout << c << ",";
-        }
-        cout << endl;
-    }
+//    cout << "Test initial matrix" << endl;
+//    for (vector<int> rowVec:matrix) {
+//        for (int c : rowVec) {
+//            cout << c << ",";
+//        }
+//        cout << endl;
+//    }
 }
 /*
  * this function initial our problem starting state, by parsing the point value from string.

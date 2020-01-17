@@ -5,6 +5,7 @@
 #include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "State.h"
+#include "MatrixTester.h"
 
 using namespace server_side;
 
@@ -30,7 +31,8 @@ int main(int argc, char *argv[]) {
 //    Main* m = new Main();
 //    m->main(argc,argv);
 
-    
+    auto* mt = new MatrixTester();
+    mt->testAlgorithms();
 
     return 0;
 }
