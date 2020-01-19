@@ -211,7 +211,9 @@ void MatrixProblem::initialStart(string s) {
     Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
     startState = new State<Vertex *>(startPoint, matrix[i][j]);
     //initital this state cost as 0 at begining.
-    this->startState->SetTotalCost(0);
+    this->startState->SetTotalCost(startState->GetStateCost());
+    //initial came from to nullptr
+    this->startState->setCameFrom(nullptr);
     alreadyCreatedStates[startState->GetState()->getLocation()] = startState;
 
 }
@@ -248,6 +250,43 @@ int MatrixProblem::getColumnNum(string row) {
         counter += 1;
     }
     return counter;
+}
+string MatrixProblem::returnSolutionPath(State<Vertex *> * state) {
+    string buffer = "";
+    string solution = "";
+    int i, j, cost;
+    while(state->getCameFrom() != nullptr) {
+        // calculating i,j to find where came form.
+        i = state->GetState()->GetRow() - state->getCameFrom()->GetState()->GetRow();
+        j= state->GetState()->GetColumn() - state->getCameFrom()->GetState()->GetColumn();
+        //calculating the cost of the move to current location
+        cost = state->getTotalCost() - state->getCameFrom()->getTotalCost();
+
+        //means we went down in the algorithm
+        if( i == 1) {
+            buffer = "Down (" + to_string(state->getTotalCost()) + "), ";
+            solution = buffer + solution;
+        }
+        //means we went up in the algorithm
+        else if( i == -1) {
+            buffer = "Up (" + to_string(state->getTotalCost()) + "), ";
+            solution = buffer + solution;
+        }
+        //means we went right in the algorithm
+        else if( j == 1) {
+            buffer = "Right (" + to_string(state->getTotalCost()) + "), ";
+            solution = buffer + solution;
+        }
+        //means we went left in the algorithm
+        else if( j == -1) {
+            buffer = "Left (" + to_string(state->getTotalCost()) + "), ";
+            solution = buffer + solution;
+        }
+    }
+    //delete the last coma and space chars
+    solution.pop_back();
+    solution.pop_back();
+    return solution;
 }
 
 

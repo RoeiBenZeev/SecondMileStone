@@ -50,7 +50,6 @@ template <typename P,typename S>
 //insert method
 void FileCacheManager<P,S>::insert(P key, S obj) {
     //key = hashString(key);
-
     //check if the key is already in the cache
     if(this->containsKey(key)) {
         updateCache(key);

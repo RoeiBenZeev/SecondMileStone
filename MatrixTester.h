@@ -11,13 +11,15 @@
 #include "MatrixProblem.h"
 #include "DFSAlgorithm.h"
 #include "BFSAlgorithm.h"
+#include "BestFSAlgorithm.h"
+
 
 class MatrixTester {
 public:
     void testSearcher(ISearcher<Vertex *> *searcher, Searchable<Vertex *> *searchable) {
 
-        searcher->Search(searchable);
-        cout << searcher->getEvaluatedNodes();
+        cout << searcher->Search(searchable) << endl;
+        cout << searcher->getEvaluatedNodes() << endl;
 
     }
 
@@ -30,7 +32,7 @@ public:
 //            if(i == 22){
 //                cout << "breakpoint";
 //            }
-        string fileName = "Matrix" + to_string(22) + "x" + to_string(22) + ".txt";
+        string fileName = "Matrix" + to_string(13) + "x" + to_string(13) + ".txt";
 
         // Read from the text file
         ifstream MyReadFile(fileName);
@@ -50,7 +52,7 @@ public:
 
         //cout << "Matrix(" + to_string(22) + "x" + to_string(22) + "): ";
         //cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
-        auto *BFS = new BFSAlgorithm<Vertex *>();
+        auto *BFS = new BestFSAlgorithm<Vertex *>();
   //      cout << "BFS(" <<;
         testSearcher(BFS, matrixProblem);
 //        cout << ")";

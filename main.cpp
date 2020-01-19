@@ -6,6 +6,8 @@
 #include "FileCacheManager.h"
 #include "State.h"
 #include "MatrixTester.h"
+#include "Vertex.h"
+#include "customPriorityQueue.h"
 
 using namespace server_side;
 
@@ -20,7 +22,7 @@ namespace boot {
             CacheManager<string, string> *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
             ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
 
-            myServer->open(5601,clientHandler);
+            myServer->open(5600,clientHandler);
 
         }
     };
@@ -28,11 +30,11 @@ namespace boot {
 
 using namespace boot;
 int main(int argc, char *argv[]) {
-//    Main* m = new Main();
-//    m->main(argc,argv);
+    Main* m = new Main();
+    m->main(argc,argv);
 
-    auto* mt = new MatrixTester();
-    mt->testAlgorithms();
+//    auto* mt = new MatrixTester();
+//    mt->testAlgorithms();
 
     return 0;
 }

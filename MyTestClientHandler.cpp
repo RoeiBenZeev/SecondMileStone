@@ -9,6 +9,7 @@
 
 int threadcounter = 0;
 void MyTestClientHandler::handleClient(int clientSocket) {
+    cout << "Client connectd" << endl;
     vector<string> problemData;
     string problem;
     while (true) {
@@ -36,30 +37,20 @@ void MyTestClientHandler::handleClient(int clientSocket) {
 //  todo make this Solver Adapter with a problem object
     MatrixProblem* mProblem = new MatrixProblem(problemData);
     auto *BFS = new BestFSAlgorithm<Vertex *>();
-    cout << BFS->Search(mProblem) << endl;
-
-    State<Vertex *> * ss = mProblem->getInitialState();
-    vector<State<Vertex *> *> successors = mProblem->getAllPossibleStates(ss);
-    for (State<Vertex *> * sss : successors) {
-        vector<State<Vertex *> *> successorss = mProblem->getAllPossibleStates(sss);
-        for(State<Vertex *> * ssss : successorss) {
-
-        }
-
-    }
+//    cout << BFS->Search(mProblem) << endl;
 //    SearchSolverAdapter<MatrixProblem,string>* sa =
 //        new SearchSolverAdapter<MatrixProblem,string>();
-    string solution;
-    //check if solution is in the database
-    try {
-        solution = cacheManager->get(problem);
-        //if the solution is not in the data base we will solve it
-    } catch (const char *e) {
-        solution = solver->solve(problem);
-        cout << "we solve using the solver" <<solution << endl;
-        //inserting the new solution to the data base
-        cacheManager->insert(problem, solution);
-    }
+    string solution = BFS->Search(mProblem);
+//    //check if solution is in the database
+//    try {
+//        solution = cacheManager->get(problem);
+//        //if the solution is not in the data base we will solve it
+//    } catch (const char *e) {
+//        solution = solver->solve(problem);
+//        cout << "we solve using the solver" <<solution << endl;
+//        //inserting the new solution to the data base
+//        cacheManager->insert(problem, solution);
+//    }
     //return the solution
     char *h = new char[solution.length() + 1];
     strcpy(h, solution.c_str());
@@ -69,22 +60,6 @@ void MyTestClientHandler::handleClient(int clientSocket) {
         cout << "Error sending msg" << endl;
     } else {
     }
-
-
-
-    //for matrix
-//    //while line is not "end" - read line
-//    string delimiter = "\n";
-//    size_t pos = problem.find(delimiter);
-//    string token = problem.substr(0,pos);
-//    //(pos = problem.find(delimiter)) != std::string::npos
-//
-//    while (problem != "end") {
-//        token = problem.substr(0, pos);
-//        //for testing:
-//        std::cout << token << std::endl;
-//        problem.erase(0, pos + delimiter.length());
-//    }
 }
 
 MyTestClientHandler::MyTestClientHandler(Solver<string, string> *s, CacheManager<string, string> *cm) {

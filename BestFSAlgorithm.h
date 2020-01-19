@@ -33,7 +33,7 @@ class BestFSAlgorithm : public Searcher<E> {
             closedMap[n] = n;
             //if this the goal state we return the answer.
             if(problem->isGoalState(n)) {
-                return to_string(n->getTotalCost());
+                return Searcher<E>::translateSolution(n);
             }
             //otherwise we go threw n successors
             else {

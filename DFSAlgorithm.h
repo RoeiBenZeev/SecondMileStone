@@ -42,7 +42,7 @@ public:
             }
 
             // Push to stack one successor which is not in the visited list.
-            vector<State<E>> successors =  problem.getAllPossibleStates(topOfStack);
+            vector<State<E>*> successors =  problem.getAllPossibleStates(topOfStack);
             bool hasSuccessor = false;
             for(State<E>* s : successors){
                 //find one successor which wasn't visited yet and push it to stack
