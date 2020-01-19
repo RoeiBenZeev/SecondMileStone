@@ -20,15 +20,15 @@ public:
  * Getting problem and searching for the solution using BFS algorithm
  * */
 
-    string Search(Searchable<E> problem) override {
+    string Search(Searchable<E>* problem) override {
 
         bool goalWasntFound = true;
 
         //get state to start from
-        State<E> *start = problem.getInitialState();
+        State<E> *start = problem->getInitialState();
 
         //Push first state to queue
-        queueBFS.push(problem.getInitialState());
+        queueBFS.push(problem->getInitialState());
 
         //any push need to update closed list that state was pushed to queue
         closed.insert(pair<State<E> *, State<E> *>(start, start));
@@ -43,20 +43,20 @@ public:
             evaluatedNodes++;
 
             //check if current state is the goal state
-            if (problem.isGoalState(topOfQueue)) {
+            if (problem->isGoalState(topOfQueue)) {
                 //if goal state was found - stop the searching algorithm
                 goalWasntFound = false;
                 continue;
             }
 
             //get successors
-            vector<State<E>> successors = problem.getAllPossibleStates(topOfQueue);
+            vector<State<E>*> successors = problem->getAllPossibleStates(topOfQueue);
             // push the ones which aren't in the closed list (map) to the queue
             for (State<E> *s : successors) {
                 auto got = closed.find(s);
                 if (got == closed.end()) {
                     s->setCameFrom(topOfQueue);
-                    s->SetTotalCost(s->getCameFrom().getTotalCost() + s->getTotalCost());
+                    s->SetTotalCost(s->getCameFrom()->getTotalCost() + s->getTotalCost());
                     queueBFS.push(s);
                     closed.insert(pair<State<E>*,State<E>*>(s,s));
                 }

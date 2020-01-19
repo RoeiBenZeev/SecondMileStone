@@ -210,6 +210,8 @@ void MatrixProblem::initialStart(string s) {
     //initializing state vertex
     Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
     startState = new State<Vertex *>(startPoint, matrix[i][j]);
+    //initital this state cost as 0 at begining.
+    this->startState->SetTotalCost(0);
     alreadyCreatedStates[startState->GetState()->getLocation()] = startState;
 
 }

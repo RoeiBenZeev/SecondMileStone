@@ -4,6 +4,7 @@
 
 #ifndef SECONDMILESTONE__STATE_H_
 #define SECONDMILESTONE__STATE_H_
+#include <limits>
 template<typename E>
 class State {
   private:
@@ -49,7 +50,12 @@ int State<E>::getTotalCost() const {
     return totalCost;
 }
 template<typename E>
-State<E>::State(E state, int state_cost):state(state), stateCost(state_cost) {}
+State<E>::State(E state, int state_cost) {
+    this->stateCost = state_cost;
+    this->state = state;
+    //each new state cost initial to infinity to be able to search properly.
+    this->totalCost = std::numeric_limits<int>::max();
+}
 template<typename E>
 int State<E>::GetStateCost() const {
     return stateCost;
