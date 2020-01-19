@@ -7,15 +7,18 @@
 
 #include <queue>
 #include "ISearcher.h"
-template <typename E>
+#include "customPriorityQueue.h"
+template<typename E>
 class Searcher : public ISearcher<E> {
 
   protected:
-    std::priority_queue<State<E>> q;
+    customPriorityQueue<E>* myPriorityQueue = new customPriorityQueue<E>();
     int evaluatedNodes;
 
   public:
-    virtual int getEvaluatedNodes() = 0; //todo: check abstract
+    int getEvaluatedNodes() override {
+        return this->evaluatedNodes;
+    }
 
 };
 

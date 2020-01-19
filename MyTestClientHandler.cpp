@@ -5,7 +5,7 @@
 #include <cstring>
 #include "MyTestClientHandler.h"
 #include "SearchSolverAdapter.h"
-
+#include "BestFSAlgorithm.h"
 
 int threadcounter = 0;
 void MyTestClientHandler::handleClient(int clientSocket) {
@@ -35,6 +35,9 @@ void MyTestClientHandler::handleClient(int clientSocket) {
     }
 //  todo make this Solver Adapter with a problem object
     MatrixProblem* mProblem = new MatrixProblem(problemData);
+    auto *BFS = new BestFSAlgorithm<Vertex *>();
+    cout << BFS->Search(mProblem) << endl;
+
     State<Vertex *> * ss = mProblem->getInitialState();
     vector<State<Vertex *> *> successors = mProblem->getAllPossibleStates(ss);
     for (State<Vertex *> * sss : successors) {

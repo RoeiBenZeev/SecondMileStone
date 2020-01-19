@@ -9,10 +9,10 @@ State<Vertex *> *MatrixProblem::getInitialState() {
 }
 bool MatrixProblem::isGoalState(State<Vertex *> *state) {
     //the pointer point on same State
-    if(state == goalState) {
+    if (state == goalState) {
         return true;
     }
-    //the pointer point on different states
+        //the pointer point on different states
     else {
         return false;
     }
@@ -42,7 +42,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
             //else a new State is created
         else {
-            State<Vertex *>* rightState = new State<Vertex *>(new Vertex(i, j + 1, matrix[i][j + 1]));
+            State<Vertex *> *rightState = new State<Vertex *>(new Vertex(i, j + 1, matrix[i][j + 1]),
+                                                              matrix[i][j + 1]);
             stateSuccessors.push_back(rightState);
             //add new State made to States map.
             alreadyCreatedStates[rightState->GetState()->getLocation()] = rightState;
@@ -62,7 +63,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
             //else a new State is created
         else {
-            State<Vertex *>* downState =new State<Vertex *>(new Vertex(i + 1, j, matrix[i + 1][j]));
+            State<Vertex *> *downState = new State<Vertex *>(new Vertex(i + 1, j, matrix[i + 1][j]),
+                                                             matrix[i + 1][j]);
             stateSuccessors.push_back(downState);
             //add new State made to States map.
             alreadyCreatedStates[downState->GetState()->getLocation()] = downState;
@@ -82,7 +84,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
             //else a new State is created
         else {
-            State<Vertex *>* leftState = new State<Vertex *>(new Vertex(i, j - 1, matrix[i][j - 1]));
+            State<Vertex *> *leftState = new State<Vertex *>(new Vertex(i, j - 1,
+                                                                        matrix[i][j - 1]), matrix[i][j - 1]);
             stateSuccessors.push_back(leftState);
             //add new State made to States map.
             alreadyCreatedStates[leftState->GetState()->getLocation()] = leftState;
@@ -102,7 +105,8 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
         }
             //else a new State is created
         else {
-            State<Vertex *>* upState = new State<Vertex *>(new Vertex(i - 1, j, matrix[i - 1][j]));
+            State<Vertex *> *upState = new State<Vertex *>(new Vertex(i - 1, j, matrix[i - 1][j]),
+                                                           matrix[i - 1][j]);
             stateSuccessors.push_back(upState);
             //add new State made to States map.
             alreadyCreatedStates[upState->GetState()->getLocation()] = upState;
@@ -110,7 +114,6 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
 
         }
     }
-
 
     return stateSuccessors;
 }
@@ -206,7 +209,7 @@ void MatrixProblem::initialStart(string s) {
     j = stoi(digit);
     //initializing state vertex
     Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
-    startState = new State<Vertex *>(startPoint);
+    startState = new State<Vertex *>(startPoint, matrix[i][j]);
     alreadyCreatedStates[startState->GetState()->getLocation()] = startState;
 
 }
@@ -228,7 +231,7 @@ void MatrixProblem::initialGoal(string s) {
     j = stoi(digit);
     //initializing state vertex
     Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
-    goalState = new State<Vertex *>(startPoint);
+    goalState = new State<Vertex *>(startPoint, matrix[i][j]);
     alreadyCreatedStates[goalState->GetState()->getLocation()] = goalState;
 }
 /*

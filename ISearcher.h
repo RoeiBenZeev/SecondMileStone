@@ -11,7 +11,7 @@
 template<typename E>
 class ISearcher {
   public:
-    virtual string Search(Searchable<E> problem) = 0;
+    virtual string Search(Searchable<E>* problem) = 0;
     virtual int getEvaluatedNodes() = 0;
 };
 

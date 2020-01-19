@@ -8,7 +8,11 @@ template<typename E>
 class State {
   private:
     E state;
+  public:
+    int GetStateCost() const;
+  private:
     int totalCost;
+    int stateCost;
     State<E>* cameFrom;
   public:
     E GetState() const;
@@ -18,8 +22,7 @@ class State {
     void SetTotalCost(int total_cost);
     void setCameFrom(State<E> *cameFrom);
 
-    State(E state, int total_cost, State<E> *came_from);
-    State(E state);
+    State(E state, int state_cost);
 };
 
 template<typename E>
@@ -27,16 +30,6 @@ State<E> *State<E>::getCameFrom() const {
     return cameFrom;
 }
 
-//thisCost is the cost of getting to this state from cameFrom State
-template<typename E>
-State<E>::State(E state, int thisCost, State<E> *came_from) : state(state), cameFrom(came_from) {
-    totalCost = came_from->GetTotalCost() + thisCost;
-}
-template<typename E>
-State<E>::State(E state):state(state) {
-    totalCost = 0;
-    cameFrom = nullptr;
-}
 template<typename E>
 E State<E>::GetState() const {
     return state;
@@ -54,6 +47,12 @@ void State<E>::setCameFrom(State<E> *cameFrom) {
 template<typename E>
 int State<E>::getTotalCost() const {
     return totalCost;
+}
+template<typename E>
+State<E>::State(E state, int state_cost):state(state), stateCost(state_cost) {}
+template<typename E>
+int State<E>::GetStateCost() const {
+    return stateCost;
 }
 
 #endif //SECONDMILESTONE__STATE_H_
