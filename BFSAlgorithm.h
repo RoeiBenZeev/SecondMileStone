@@ -57,7 +57,7 @@ public:
             if (problem->isGoalState(topOfQueue)) {
                 //if goal state was found - stop the searching algorithm
                 goalWasntFound = false;
-                continue;
+                return ISearcher<S,E>::translateSolution(topOfQueue);
             }
 
             //get successors
@@ -69,7 +69,7 @@ public:
                 auto got = closed.find(s);
                 if (got == closed.end()) {
                     s->setCameFrom(topOfQueue);
-                    s->SetTotalCost(s->getCameFrom()->getTotalCost() + s->getTotalCost());
+                    s->SetTotalCost(s->getCameFrom()->getTotalCost() + s->GetStateCost());
                     queueBFS.push(s);
                     closed.insert(pair<State<E>*,State<E>*>(s,s));
                 }

@@ -20,12 +20,11 @@ namespace boot {
         void main(int argc, char *argv[]) {
             Server *myServer = new MySerialServer();
             Solver<MatrixProblem*, string> *solver =
-                new SearchSolverAdapter<MatrixProblem*,string>(new AStarAlgorithm<string,Vertex*>());
+                new SearchSolverAdapter<MatrixProblem*,string>(new BFSAlgorithm<string,Vertex*>());
             CacheManager<string, string> *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
             ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
 
-            myServer->open(5601,clientHandler);
-
+            myServer->open(5600,clientHandler);
         }
     };
 }

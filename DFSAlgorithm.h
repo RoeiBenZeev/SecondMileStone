@@ -54,7 +54,7 @@ public:
                 if ( got == closed.end()){
                     hasSuccessor = true;
                     s->setCameFrom(topOfStack);
-                    s->SetTotalCost(s->getCameFrom()->getTotalCost() + s->getTotalCost());
+                    s->SetTotalCost(s->getCameFrom()->getTotalCost() + s->GetStateCost());
                     stackDfs.push(s);
                     closed.insert(pair<State<E> *, State<E> *>(s,s));
                     evaluatedNodes++; //each insertion to closed list is countered

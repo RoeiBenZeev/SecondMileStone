@@ -152,13 +152,17 @@ string FileCacheManager<P,S>::get(P key) {
             throw "No such object";
         }
         string buffer;
-        //reading out object from a file
-        reader >> buffer;
-        //check if file open currectly
-        if(!reader) {
-            //unlocking this scope
-            mutex_lock.unlock();
-            throw "error happened in opening file for reading";
+        string solution = "";
+        //read all data from file
+        while (buffer != "\n") {
+            //reading out object from a file
+            reader >> buffer;
+            //check if file open currectly
+            if (!reader) {
+                //unlocking this scope
+                mutex_lock.unlock();
+                throw "error happened in opening file for reading";
+            }
         }
         //check our cache size
         if (this->cacheMemory.size() == cacheSize) {
@@ -173,7 +177,7 @@ string FileCacheManager<P,S>::get(P key) {
         //unlocking this scope
         mutex_lock.unlock();
         //return wanted object
-        return buffer;
+        return solution;
     }
 }
 template <typename P,typename S>
