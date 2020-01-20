@@ -9,8 +9,8 @@
 #include <unordered_map>
 #include "ISearcher.h"
 
-template<typename E>
-class DFSAlgorithm : public ISearcher<E> {
+template<typename S,typename E>
+class DFSAlgorithm : public ISearcher<S,E> {
 
 private:
     int evaluatedNodes = 0;
@@ -42,7 +42,7 @@ public:
             //check if goal
             if(problem->isGoalState(topOfStack)){
                 goalWasntFound = false;
-                return Searcher<E>::translateSolution(n);
+                return ISearcher<S,E>::translateSolution(topOfStack);
             }
 
             // Push to stack one successor which is not in the visited list.
@@ -71,6 +71,9 @@ public:
 
     int getEvaluatedNodes() override {
         return evaluatedNodes;
+    }
+    DFSAlgorithm* clone() {
+        return new DFSAlgorithm<S,E>();
     }
 
 };

@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include "Searcher.h"
 
-template<typename E>
-class BFSAlgorithm : public ISearcher<E> {
+template<typename S,typename E>
+class BFSAlgorithm : public ISearcher<S,E> {
 private:
 int evaluatedNodes = 0;
     unordered_map<State<E> *, State<E> *> closed;
@@ -17,6 +17,10 @@ int evaluatedNodes = 0;
     queue<State<E> *> queueBFS_TESTER; // TODO: delete me
 
 public:
+
+    BFSAlgorithm* clone() {
+        return new BFSAlgorithm<S,E>();
+    }
 /*
  * Getting problem and searching for the solution using BFS algorithm
  * */

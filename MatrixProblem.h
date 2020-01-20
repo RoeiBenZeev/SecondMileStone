@@ -32,6 +32,7 @@ class MatrixProblem : public Searchable<Vertex*>  {
 
     State<Vertex*>* startState;
     State<Vertex*>* goalState;
+    string key;
     int rowNum;
     int columnNum;
     void initialMatrix(vector<string> matrixData);
@@ -47,6 +48,7 @@ class MatrixProblem : public Searchable<Vertex*>  {
 
     int getHeuristic(State<Vertex *> *state) ;
     string returnSolutionPath(State<Vertex*>* goalState);
+    string toString();
 
     int calcHeuristic(State<Vertex *> *state) override;
 };

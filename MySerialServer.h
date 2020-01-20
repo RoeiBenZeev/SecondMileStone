@@ -23,9 +23,9 @@
 #include <thread>
 #include <iostream>
 #include <cstring>
+#include <mutex>
 
 extern bool keepRun;
-
 class MySerialServer : public server_side::Server {
   public:
     void open(int, ClientHandler*) override;

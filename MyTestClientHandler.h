@@ -8,6 +8,7 @@
 #include "ClientHandler.h"
 #include "Solver.h"
 #include "CacheManager.h"
+#include "MatrixProblem.h"
 #include <iostream>
 #include<string.h>
 #include <cstring>
@@ -24,10 +25,11 @@ extern int threadcounter;
 
 class MyTestClientHandler : public ClientHandler {
   public:
-        MyTestClientHandler(Solver<string, string> *s, CacheManager<string, string> *cm);
+    MyTestClientHandler(Solver<MatrixProblem*,string> *s, CacheManager<string, string> *cm);
     void handleClient(int) override;
+    ClientHandler *clone() override;
   private:
-    Solver<string, string> *solver;
+    Solver<MatrixProblem*, string> *solver;
     CacheManager<string, string> *cacheManager;
 
 };

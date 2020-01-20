@@ -17,7 +17,7 @@
 class MatrixTester {
 public:
 
-    void testSearcherPath(ISearcher<Vertex *> *searcher, Searchable<Vertex *> *searchable) {
+    void testSearcherPath(ISearcher<string,Vertex *> *searcher, Searchable<Vertex *> *searchable) {
 
         if ((searcher->Search(searchable)) != "No Solution") {
             cout << searcher->Search(searchable) << endl;
@@ -27,7 +27,7 @@ public:
 
     }
 
-    void testSearcher(ISearcher<Vertex *> *searcher, Searchable<Vertex *> *searchable) {
+    void testSearcher(ISearcher<string,Vertex *> *searcher, Searchable<Vertex *> *searchable) {
 
         if ((searcher->Search(searchable)) != "No Solution") {
             cout << searcher->getEvaluatedNodes();
@@ -63,7 +63,7 @@ public:
 
             //BFS:
             cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
-            auto *BFS = new BFSAlgorithm<Vertex *>();
+            auto *BFS = new BFSAlgorithm<string,Vertex*>();
             cout << "BFS(";
             testSearcher(BFS, matrixProblem);
             cout << ")";
@@ -71,21 +71,21 @@ public:
 
             //DFS:
             cout << ", DFS(";
-            auto *DFS = new DFSAlgorithm<Vertex *>();
+            auto *DFS = new DFSAlgorithm<string,Vertex *>();
             testSearcher(DFS, matrixProblem);
             cout << ")";
 
 
             //BestFS:
             cout << ", BestFS(";
-            auto *BestFS = new BestFSAlgorithm<Vertex *>();
+            auto *BestFS = new BestFSAlgorithm<string,Vertex *>();
             testSearcher(BestFS, matrixProblem);
             cout << ")";
 
 
           //A*
             cout << ", A*(";
-            auto *AStar = new AStarAlgorithm<Vertex*>();
+            auto *AStar = new AStarAlgorithm<string, Vertex*>();
             testSearcher(AStar, matrixProblem);
             cout << ")";
             cout << endl;
@@ -119,28 +119,28 @@ public:
 
             //BFS:
             cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
-            auto *BFS = new BFSAlgorithm<Vertex *>();
+            auto *BFS = new BFSAlgorithm<string,Vertex *>();
             cout << "BFS Path: ";
             testSearcherPath(BFS, matrixProblem);
             cout << "" << endl;
 
 
             //DFS:
-            auto *DFS = new DFSAlgorithm<Vertex *>();
+            ISearcher<string,Vertex*> *DFS = new DFSAlgorithm<string,Vertex *>();
             cout << "DFS Path: ";
             testSearcherPath(DFS, matrixProblem);
             cout << "" << endl;
 
 
             //BestFS:
-            auto *BestFS = new BestFSAlgorithm<Vertex *>();
+            auto *BestFS = new BestFSAlgorithm<string,Vertex *>();
             cout << "BestFS Path: ";
             testSearcherPath(BestFS, matrixProblem);
             cout << "" << endl;
 
 
 //          A*
-            auto *AStar = new AStarAlgorithm<Vertex*>();
+            auto *AStar = new AStarAlgorithm<string,Vertex*>();
             cout << "A* Path: ";
             testSearcherPath(AStar, matrixProblem);
             cout << endl;

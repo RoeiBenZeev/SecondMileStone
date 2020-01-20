@@ -8,18 +8,8 @@
 #include <unordered_map>
 #include "Searcher.h"
 #include "customPriorityQueue.h"
-
-template <typename E>
-class BestFSAlgorithm : public Searcher<E> {
-
-    struct CompareStates {
-        bool operator()(State<E> *const &s1, State<E> *const &s2) {
-            // return "true" if "s1" is ordered before "s2", for example:
-            bool b = s1->getTotalCost() + s1->getHeuristicCost() >
-                     s2->getTotalCost() + s2->getHeuristicCost();
-            return (b);
-        }
-    };
+template <typename S,typename E>
+class BestFSAlgorithm : public Searcher<S,E> {
     unordered_map<State<E>*,State<E>*> closedMap;
 
   public:
@@ -30,23 +20,20 @@ class BestFSAlgorithm : public Searcher<E> {
     string Search(Searchable<E>* problem) override {
         State<E>* n;
         //first we initial our queue with start state.
-        State<E> *start = problem->getInitialState();
-        start->SetTotalCost(start->GetStateCost());
-
-        Searcher<E>::myPriorityQueue->push(problem->getInitialState());
+        Searcher<S,E>::myPriorityQueue->push(problem->getInitialState());
         //we run while the queue is not empty.
         int counter = 0;
-        while(!Searcher<E>::myPriorityQueue->empty()) {
+        while(!Searcher<S,E>::myPriorityQueue->empty()) {
             // n is our algorithm buffer
-            n = Searcher<E>::myPriorityQueue->top();
-            Searcher<E>::myPriorityQueue->pop();
+            n = Searcher<S,E>::myPriorityQueue->top();
+            Searcher<S,E>::myPriorityQueue->pop();
             //increase evaluated nodes
             this->evaluatedNodes += 1;
             //add n to closedMap , its tell us we already visited this state and no need to check it again.
             closedMap[n] = n;
             //if this the goal state we return the answer.
             if(problem->isGoalState(n)) {
-                return Searcher<E>::translateSolution(n);
+                return Searcher<S,E>::translateSolution(n);
             }
             //otherwise we go threw n successors
             else {
@@ -59,11 +46,11 @@ class BestFSAlgorithm : public Searcher<E> {
                      * */
                     auto inMap = closedMap.find(s);
                     //if we go into this if then s is not in both close and open.
-                    bool notInBoth = !(inMap != closedMap.end()) && !(Searcher<E>::myPriorityQueue->isInQueue(s));
+                    bool notInBoth = !(inMap != closedMap.end()) && !(Searcher<S,E>::myPriorityQueue->isInQueue(s));
                     if(notInBoth){
                         s->setCameFrom(n);
                         s->SetTotalCost(n->getTotalCost() + s->GetStateCost());
-                        Searcher<E>::myPriorityQueue->push(s);
+                        Searcher<S,E>::myPriorityQueue->push(s);
                     }
                     //means that s is in closedMap , and we can skip
                     else if(inMap != closedMap.end()){
@@ -76,7 +63,7 @@ class BestFSAlgorithm : public Searcher<E> {
                         int newTotalCost = n->getTotalCost() + s->GetStateCost();
                         //if newTotalCost is less then prev , we update our rout
                         if (newTotalCost < prevTotalCost) {
-                            Searcher<E>::myPriorityQueue->upDateQueue(s,newTotalCost);
+                            Searcher<S,E>::myPriorityQueue->upDateQueue(s,newTotalCost);
                             //update we came to s from n
                             s->setCameFrom(n);
                         }
@@ -86,6 +73,12 @@ class BestFSAlgorithm : public Searcher<E> {
         }
         //todo delete me
         //return "aaaaa";
+    }
+    /*
+     * make a clone of this object.
+     */
+    ISearcher<S,E> *clone() override {
+        return new BestFSAlgorithm<S,E>;
     }
 };
 

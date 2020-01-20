@@ -62,7 +62,7 @@ void MySerialServer::open(int port, ClientHandler *ch) {
                 throw "-4";
             }
             //each client run in different thread.
-            thread clientThread(start, ch, client_socket, address);
+            thread clientThread(start, ch->clone(), client_socket, address);
             clientThread.detach();
         }
         //thread clientThread2(start, ch ,socketfd,address);

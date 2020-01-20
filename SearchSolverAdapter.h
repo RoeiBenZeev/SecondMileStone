@@ -6,21 +6,27 @@
 #define SECONDMILESTONE__SEARCHSOLVERADAPTER_H_
 #include "Solver.h"
 #include "MatrixProblem.h"
+#include "ISearcher.h"
 #include <string>
 
 using namespace std;
 template <typename P, typename S>
 class SearchSolverAdapter : public Solver<P,S> {
   private:
-    Solver<P,S>* solver;
-    P* problem;
+    ISearcher<S,Vertex*>* searcher;
   public:
     //solve function call solver inner object to run his solve method.
     S solve(P problem) override {
-        solver->solve(problem);
+
+        return searcher->Search(problem);
     }
     //constructor
-    SearchSolverAdapter(const Solver<P,S> *solver, P* problem) : solver(solver), problem(problem) {}
+    SearchSolverAdapter(ISearcher<S,Vertex*>* searcher) : searcher(searcher) {}
+    Solver<P, S> *clone() override {
+        ISearcher<S,Vertex*>* tempSearcher = searcher->clone();
+        return new SearchSolverAdapter(tempSearcher);
+    }
+
 };
 
 #endif //SECONDMILESTONE__SEARCHSOLVERADAPTER_H_

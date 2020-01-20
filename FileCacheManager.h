@@ -14,12 +14,13 @@
 #include <list>
 #include <fstream>
 #include <functional>
+#include <mutex>
 #include "CacheManager.h"
 
 using namespace std;
 template <typename P,typename S>
 //global to run the loop
-class FileCacheManager : public CacheManager<P,string> {
+class FileCacheManager : public CacheManager<P,S> {
     unsigned int cacheSize;
     unordered_map<P, std::pair<S, typename list<P>::iterator>> cacheMemory;
     list<P> myList;
@@ -29,6 +30,8 @@ class FileCacheManager : public CacheManager<P,string> {
     void deleteLRU();
     bool containsKey(P);
     void addToMap(P, S);
+    std::mutex mutex_lock;
+
 
   public:
     void insert(P, S);
@@ -49,13 +52,14 @@ template <typename P,typename S>
 
 //insert method
 void FileCacheManager<P,S>::insert(P key, S obj) {
-    //key = hashString(key);
+    //locking this scope
+    mutex_lock.lock();
     //check if the key is already in the cache
     if(this->containsKey(key)) {
         updateCache(key);
         //list<string>::iterator it = myList.begin();
         //update new obj and iterator
-        list<string>::iterator it = myList.begin();
+        typename list<P>::iterator it = myList.begin();
         cacheMemory[key] = {obj, it};
         // his key isnt it the cache
     } else {
@@ -70,12 +74,14 @@ void FileCacheManager<P,S>::insert(P key, S obj) {
         }
     }
     writeToFile(key, obj);
+    //unlocking this scope
+    mutex_lock.unlock();
 }
 template <typename P,typename S>
 
 //update our cache order for existing key
 void FileCacheManager<P,S>::updateCache(P key) {
-    //key = hashString(key);
+
     //delete current key recently used from prev location.
     myList.erase(cacheMemory[key].second);
     //our last used key will be first now.
@@ -93,7 +99,6 @@ template <typename P,typename S>
 
 //check if out map contains th key.
 bool FileCacheManager<P,S>::containsKey(P key) {
-    //key = hashString(key);
     typename std::unordered_map<std::string, std::pair<string,
     typename list<string>::iterator>>::iterator it
         = cacheMemory.find(key);
@@ -105,14 +110,14 @@ bool FileCacheManager<P,S>::containsKey(P key) {
 template <typename P,typename S>
 //add key value to the map with iterator.
 void FileCacheManager<P,S>::addToMap(P key, S value) {
-    //key = hashString(key);
+
     myList.push_front(key);
     list<string>::iterator it = myList.begin();
     cacheMemory[key] = {value, it};
 }
 template <typename P,typename S>
 void FileCacheManager<P,S>::writeToFile(P key, S obj) {
-    //key = hashString(key);
+
     //open a stream for writing
     std::ofstream writer(key+".txt",std::ios::binary | std::ofstream::trunc);
     if(!writer || !writer.is_open()) {
@@ -126,18 +131,24 @@ void FileCacheManager<P,S>::writeToFile(P key, S obj) {
 }
 template <typename P,typename S>
 string FileCacheManager<P,S>::get(P key) {
-    //key = hashString(key);
+    //locking this scope
+    mutex_lock.lock();
+
     //this key is in the cache
     if(this->containsKey(key)) {
         //we updated the LRU algorithm
         updateCache(key);
         cout << "the solution is in the cache"<< std::flush;
+        //unlocking this scope
+        mutex_lock.unlock();
         //return our key object
         return cacheMemory[key].first;
     } else {
         string b = key+".txt";
         std::ifstream reader(b,std::ios::binary);
         if(!reader || !reader.is_open()) {
+            //unlocking this scope
+            mutex_lock.unlock();
             throw "No such object";
         }
         string buffer;
@@ -145,6 +156,8 @@ string FileCacheManager<P,S>::get(P key) {
         reader >> buffer;
         //check if file open currectly
         if(!reader) {
+            //unlocking this scope
+            mutex_lock.unlock();
             throw "error happened in opening file for reading";
         }
         //check our cache size
@@ -156,7 +169,9 @@ string FileCacheManager<P,S>::get(P key) {
             addToMap(key, buffer);
         }
         reader.close();
-        cout << "the solution is in the files"<< std::flush;
+        cout << "the solution is in the files"<< endl;
+        //unlocking this scope
+        mutex_lock.unlock();
         //return wanted object
         return buffer;
     }
@@ -171,7 +186,7 @@ template <typename P,typename S>
 string FileCacheManager<P,S>::hashString(const P& key){
     hash<string> hash;
     size_t hashedKey = hash(key);
-    char buf[24]; // just big enough
+    char buf[128]; // just big enough
     snprintf(buf, sizeof buf, "%zu", hashedKey);
     string newKey(buf);
     return newKey;

@@ -13,7 +13,7 @@
 template <typename P, typename S, typename E>
 class SolverAdapter : public Solver<P,S> {
   private:
-    Searcher<E> searcher;
+    Searcher<S,E> searcher;
 
   public:
     S solve(P problem) override {

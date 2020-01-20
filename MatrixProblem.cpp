@@ -145,6 +145,13 @@ MatrixProblem::MatrixProblem(vector<string> problemData) {
     //then we can initial start and goal states
     initialStart(startString);
     initialGoal(goalString);
+
+    //initial key field to be able to make to string on him
+    string temp = "";
+    for(string s : problemData) {
+        temp = temp + s;
+    }
+    this->key = temp;
 }
 
 /*
@@ -293,6 +300,14 @@ string MatrixProblem::returnSolutionPath(State<Vertex *> * state) {
     solution.pop_back();
     solution.pop_back();
     return solution;
+}
+string MatrixProblem::toString() {
+    hash<string> hash;
+    size_t hashedKey = hash(this->key);
+    char buf[128]; // just big enough
+    snprintf(buf, sizeof buf, "%zu", hashedKey);
+    string newKey(buf);
+    return newKey;
 }
 
 int MatrixProblem::calcHeuristic(State<Vertex *> *state) {

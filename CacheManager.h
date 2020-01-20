@@ -9,6 +9,7 @@ template <typename P,typename S>
 class CacheManager {
   public:
     virtual void insert(P,S) = 0;
+    //virtual CacheManager* clone() = 0;
 
     virtual S get(P) = 0;
 
