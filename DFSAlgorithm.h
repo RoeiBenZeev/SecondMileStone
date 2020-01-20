@@ -20,29 +20,33 @@ private:
 public:
 
     //The DFS algorithm
-    string Search(Searchable<E> problem) override {
+    string Search(Searchable<E>* problem) override {
 
-        State<E>* start = problem.getInitialState();
+        State<E>* start = problem->getInitialState();
+
         bool goalWasntFound = true;
 
         //push to stack the state
-        stackDfs.push(problem.getInitialState());
+        stackDfs.push(problem->getInitialState());
         closed.insert(pair<State<E> *, State<E> *>(start,start));
         evaluatedNodes++; //each insertion to closed list is countered
 
         while(goalWasntFound){
 
+            if( stackDfs.size() == 0){
+                return "No Solution";
+            }
             //Take stack's top element and process it (check if goal, otherwise - push one successor to stack)
             State<E> *topOfStack = stackDfs.top();
 
             //check if goal
-            if(problem.isGoalState(topOfStack)){
+            if(problem->isGoalState(topOfStack)){
                 goalWasntFound = false;
-                continue;
+                return Searcher<E>::translateSolution(n);
             }
 
             // Push to stack one successor which is not in the visited list.
-            vector<State<E>*> successors =  problem.getAllPossibleStates(topOfStack);
+            vector<State<E>*> successors =  problem->getAllPossibleStates(topOfStack);
             bool hasSuccessor = false;
             for(State<E>* s : successors){
                 //find one successor which wasn't visited yet and push it to stack
@@ -50,9 +54,9 @@ public:
                 if ( got == closed.end()){
                     hasSuccessor = true;
                     s->setCameFrom(topOfStack);
-                    s->SetTotalCost(s->getCameFrom().getTotalCost() + s->getTotalCost());
+                    s->SetTotalCost(s->getCameFrom()->getTotalCost() + s->getTotalCost());
                     stackDfs.push(s);
-                    closed.insert(pair<State<E> *, State<E> *>(start,start));
+                    closed.insert(pair<State<E> *, State<E> *>(s,s));
                     evaluatedNodes++; //each insertion to closed list is countered
                     break; //gets only one successor.
                 }
@@ -61,6 +65,8 @@ public:
                 stackDfs.pop();
             }
         }
+        return "return statement should be here";
+        //TODO: !!!!!!!!!! RETURN A SOLUTION !!!!!!!!!!!!!
     }
 
     int getEvaluatedNodes() override {

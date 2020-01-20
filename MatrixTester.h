@@ -12,14 +12,28 @@
 #include "DFSAlgorithm.h"
 #include "BFSAlgorithm.h"
 #include "BestFSAlgorithm.h"
-
+#include "AStarAlgorithm.h"
 
 class MatrixTester {
 public:
+
+    void testSearcherPath(ISearcher<Vertex *> *searcher, Searchable<Vertex *> *searchable) {
+
+        if ((searcher->Search(searchable)) != "No Solution") {
+            cout << searcher->Search(searchable) << endl;
+        } else {
+            cout << "No Solution";
+        }
+
+    }
+
     void testSearcher(ISearcher<Vertex *> *searcher, Searchable<Vertex *> *searchable) {
 
-        cout << searcher->Search(searchable) << endl;
-        cout << searcher->getEvaluatedNodes() << endl;
+        if ((searcher->Search(searchable)) != "No Solution") {
+            cout << searcher->getEvaluatedNodes();
+        } else {
+            cout << "No Solution";
+        }
 
     }
 
@@ -28,48 +42,115 @@ public:
         string line;
 
         //make test for each matrix file
-//        for (int i = 10; i < 37; i += 3) {
-//            if(i == 22){
-//                cout << "breakpoint";
-//            }
-        string fileName = "Matrix" + to_string(13) + "x" + to_string(13) + ".txt";
+        for (int i = 10; i < 38; i += 3) {
 
-        // Read from the text file
-        ifstream MyReadFile(fileName);
+            string fileName = "Matrix" + to_string(i) + "x" + to_string(i) + ".txt";
 
-        vector<string> matrixLines;
-        // Use a while loop together with the getline() function to read the file line by line
-        while (getline(MyReadFile, line)) {
-            //create vector of lines
-            if (line == "end") {
-                break;
+            // Read from the text file
+            ifstream MyReadFile(fileName);
+
+            vector<string> matrixLines;
+            // Use a while loop together with the getline() function to read the file line by line
+            while (getline(MyReadFile, line)) {
+                //create vector of lines
+                if (line == "end") {
+                    break;
+                }
+                matrixLines.push_back(line);
             }
-            matrixLines.push_back(line);
+
+            auto *matrixProblem = new MatrixProblem(matrixLines);
+
+            //BFS:
+            cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
+            auto *BFS = new BFSAlgorithm<Vertex *>();
+            cout << "BFS(";
+            testSearcher(BFS, matrixProblem);
+            cout << ")";
+
+
+            //DFS:
+            cout << ", DFS(";
+            auto *DFS = new DFSAlgorithm<Vertex *>();
+            testSearcher(DFS, matrixProblem);
+            cout << ")";
+
+
+            //BestFS:
+            cout << ", BestFS(";
+            auto *BestFS = new BestFSAlgorithm<Vertex *>();
+            testSearcher(BestFS, matrixProblem);
+            cout << ")";
+
+
+          //A*
+            cout << ", A*(";
+            auto *AStar = new AStarAlgorithm<Vertex*>();
+            testSearcher(AStar, matrixProblem);
+            cout << ")";
+            cout << endl;
+
+            // Close the file
+            MyReadFile.close();
         }
 
-        auto *matrixProblem = new MatrixProblem(matrixLines);
+        //##########################################################################
+        //Printing solution:
+
+        //make test for each matrix file
+        for (int i = 10; i < 38; i += 3) {
+
+            string fileName = "Matrix" + to_string(i) + "x" + to_string(i) + ".txt";
+
+            // Read from the text file
+            ifstream MyReadFile(fileName);
+
+            vector<string> matrixLines;
+            // Use a while loop together with the getline() function to read the file line by line
+            while (getline(MyReadFile, line)) {
+                //create vector of lines
+                if (line == "end") {
+                    break;
+                }
+                matrixLines.push_back(line);
+            }
+
+            auto *matrixProblem = new MatrixProblem(matrixLines);
+
+            //BFS:
+            cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
+            auto *BFS = new BFSAlgorithm<Vertex *>();
+            cout << "BFS Path: ";
+            testSearcherPath(BFS, matrixProblem);
+            cout << "" << endl;
 
 
-        //cout << "Matrix(" + to_string(22) + "x" + to_string(22) + "): ";
-        //cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
-        auto *BFS = new BestFSAlgorithm<Vertex *>();
-  //      cout << "BFS(" <<;
-        testSearcher(BFS, matrixProblem);
-//        cout << ")";
+            //DFS:
+            auto *DFS = new DFSAlgorithm<Vertex *>();
+            cout << "DFS Path: ";
+            testSearcherPath(DFS, matrixProblem);
+            cout << "" << endl;
 
 
-        //DFS:
-//        cout << ", DFS(";
-//        auto *DFS = new DFSAlgorithm<Vertex *>();
-//        testSearcher(DFS, matrixProblem);
-//        cout << ")";
-//        cout << endl;
+            //BestFS:
+            auto *BestFS = new BestFSAlgorithm<Vertex *>();
+            cout << "BestFS Path: ";
+            testSearcherPath(BestFS, matrixProblem);
+            cout << "" << endl;
 
 
-        // Close the file
-        MyReadFile.close();
+//          A*
+            auto *AStar = new AStarAlgorithm<Vertex*>();
+            cout << "A* Path: ";
+            testSearcherPath(AStar, matrixProblem);
+            cout << endl;
+
+            // Close the file
+            MyReadFile.close();
+        }
+
+
     }
-    // }
 
 };
 

@@ -11,7 +11,17 @@
 
 template <typename E>
 class BestFSAlgorithm : public Searcher<E> {
+
+    struct CompareStates {
+        bool operator()(State<E> *const &s1, State<E> *const &s2) {
+            // return "true" if "s1" is ordered before "s2", for example:
+            bool b = s1->getTotalCost() + s1->getHeuristicCost() >
+                     s2->getTotalCost() + s2->getHeuristicCost();
+            return (b);
+        }
+    };
     unordered_map<State<E>*,State<E>*> closedMap;
+
   public:
     /*
      * search function implements beast first search algorithm , which is a searching algorithm for
@@ -20,6 +30,9 @@ class BestFSAlgorithm : public Searcher<E> {
     string Search(Searchable<E>* problem) override {
         State<E>* n;
         //first we initial our queue with start state.
+        State<E> *start = problem->getInitialState();
+        start->SetTotalCost(start->GetStateCost());
+
         Searcher<E>::myPriorityQueue->push(problem->getInitialState());
         //we run while the queue is not empty.
         int counter = 0;
@@ -72,7 +85,7 @@ class BestFSAlgorithm : public Searcher<E> {
             }
         }
         //todo delete me
-        return "aaaaa";
+        //return "aaaaa";
     }
 };
 

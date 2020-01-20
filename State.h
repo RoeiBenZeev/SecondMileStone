@@ -14,6 +14,14 @@ class State {
   private:
     int totalCost;
     int stateCost;
+    int huristicCost;
+public:
+    void setHeuristicCost(int heuristicCost);
+
+public:
+    int getHeuristicCost() const;
+
+private:
     State<E>* cameFrom;
   public:
     E GetState() const;
@@ -42,7 +50,7 @@ void State<E>::SetTotalCost(int total_cost) {
 
 template<typename E>
 void State<E>::setCameFrom(State<E> *cameFrom) {
-    State::cameFrom = cameFrom;
+    State<E>::cameFrom = cameFrom;
 }
 
 template<typename E>
@@ -55,10 +63,24 @@ State<E>::State(E state, int state_cost) {
     this->state = state;
     //each new state cost initial to infinity to be able to search properly.
     this->totalCost = std::numeric_limits<int>::max();
+    //each new state heuristic cost initializes to 0 so algorithms which
+    //are not using this will not be affected (line DFS, BFS, etc.)
+    this->huristicCost = 0;
+    this->cameFrom = nullptr;
 }
 template<typename E>
 int State<E>::GetStateCost() const {
     return stateCost;
+}
+
+template<typename E>
+int State<E>::getHeuristicCost() const {
+    return huristicCost;
+}
+
+template<typename E>
+void State<E>::setHeuristicCost(int huristicCost) {
+    State::huristicCost = huristicCost;
 }
 
 #endif //SECONDMILESTONE__STATE_H_

@@ -14,6 +14,7 @@ class Searchable {
     virtual State<E>* getInitialState() = 0;
     virtual bool isGoalState(State<E>*) = 0;
     virtual vector<State<E>*> getAllPossibleStates(State<E>*) = 0;
+    virtual int calcHeuristic(State<E>*) = 0;
 };
 
 #endif //SECONDMILESTONE__SEARCHABLE_H_

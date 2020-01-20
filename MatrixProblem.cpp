@@ -3,10 +3,13 @@
 //
 
 #include "MatrixProblem.h"
+#include <cmath>
+
 
 State<Vertex *> *MatrixProblem::getInitialState() {
     return startState;
 }
+
 bool MatrixProblem::isGoalState(State<Vertex *> *state) {
     //the pointer point on same State
     if (state == goalState) {
@@ -117,6 +120,7 @@ vector<State<Vertex *> *> MatrixProblem::getAllPossibleStates(State<Vertex *> *s
 
     return stateSuccessors;
 }
+
 //constructor
 MatrixProblem::MatrixProblem(vector<string> problemData) {
     //first i get the information into buffers so i can initial matrix before states.
@@ -142,6 +146,7 @@ MatrixProblem::MatrixProblem(vector<string> problemData) {
     initialStart(startString);
     initialGoal(goalString);
 }
+
 /*
  * A function responssible for matrix creation.
  */
@@ -191,6 +196,7 @@ void MatrixProblem::initialMatrix(vector<string> matrixData) {
 //        cout << endl;
 //    }
 }
+
 /*
  * this function initial our problem starting state, by parsing the point value from string.
  */
@@ -202,21 +208,20 @@ void MatrixProblem::initialStart(string s) {
     //getting first argument by ',' delimiter
     getline(f, digit, ',');
     //converting string to int
-    i = stoi(digit);
+    i = (int)stod(digit);
     //getting second argument by ',' delimiter
     getline(f, digit, ',');
     //converting string to int
-    j = stoi(digit);
+    j = (int)stod(digit);
     //initializing state vertex
     Vertex *startPoint = new Vertex(i, j, matrix[i][j]);
     startState = new State<Vertex *>(startPoint, matrix[i][j]);
     //initital this state cost as 0 at begining.
-    this->startState->SetTotalCost(startState->GetStateCost());
-    //initial came from to nullptr
-    this->startState->setCameFrom(nullptr);
+    this->startState->SetTotalCost(0);
     alreadyCreatedStates[startState->GetState()->getLocation()] = startState;
 
 }
+
 /*
  * this function initial our problem end state, by parsing the point value from string.
  */
@@ -238,6 +243,7 @@ void MatrixProblem::initialGoal(string s) {
     goalState = new State<Vertex *>(startPoint, matrix[i][j]);
     alreadyCreatedStates[goalState->GetState()->getLocation()] = goalState;
 }
+
 /*
  * this function count a row length which is the number of our columns
  */
@@ -289,5 +295,21 @@ string MatrixProblem::returnSolutionPath(State<Vertex *> * state) {
     return solution;
 }
 
+int MatrixProblem::calcHeuristic(State<Vertex *> *state) {
+    struct point {
+        int x;
+        int y;
+    };
 
+    point current{};
+    current.x = state->GetState()->GetRow();
+    current.y = state->GetState()->GetColumn();
 
+    point goal{};
+    goal.x = goalState->GetState()->GetRow();
+    goal.y = goalState->GetState()->GetColumn();
+
+    //todo: check distance should be integer
+    //returns the distance rounded and as an integer.
+    return int(round(sqrt(pow((current.x - goal.x), 2) + pow((current.y - goal.y), 2))));
+}

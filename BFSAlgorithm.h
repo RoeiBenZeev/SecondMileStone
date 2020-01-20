@@ -14,6 +14,7 @@ private:
 int evaluatedNodes = 0;
     unordered_map<State<E> *, State<E> *> closed;
     queue<State<E> *> queueBFS;
+    queue<State<E> *> queueBFS_TESTER; // TODO: delete me
 
 public:
 /*
@@ -33,11 +34,17 @@ public:
         //any push need to update closed list that state was pushed to queue
         closed.insert(pair<State<E> *, State<E> *>(start, start));
 
+        int testingCounter = 0; //TODO: REMOVE ME
+
         //BFS algorithm
         while (goalWasntFound) {
+            if(queueBFS.size() == 0){
+                return "No Solution";
+            }
 
             //Take queue's front element and process it (check if goal, otherwise - push successors to queue)
             State<E> *topOfQueue = queueBFS.front();
+
             queueBFS.pop();
             //each poped state is countered as evaluated node!
             evaluatedNodes++;
@@ -51,6 +58,8 @@ public:
 
             //get successors
             vector<State<E>*> successors = problem->getAllPossibleStates(topOfQueue);
+
+
             // push the ones which aren't in the closed list (map) to the queue
             for (State<E> *s : successors) {
                 auto got = closed.find(s);
@@ -61,9 +70,13 @@ public:
                     closed.insert(pair<State<E>*,State<E>*>(s,s));
                 }
             }
-        }
-    }
 
+
+        }
+
+        return "bfs search returns this message - need to return solution\n";
+    }
+   
     int getEvaluatedNodes() override {
         return evaluatedNodes;
     }
