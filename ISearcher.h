@@ -14,6 +14,7 @@ class ISearcher {
     virtual S Search(Searchable<E>* problem) = 0;
     virtual int getEvaluatedNodes() = 0;
     virtual ISearcher* clone() = 0;
+    virtual ~ISearcher() {};
     string translateSolution(State<E>* state) {
         State<E>* currentState = state;
         string buffer = "";

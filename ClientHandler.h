@@ -14,6 +14,7 @@ class ClientHandler {
   public:
     virtual void handleClient(int) = 0;
     virtual ClientHandler* clone() = 0;
+    virtual ~ClientHandler() {};
 };
 
 #endif //SECONDMILESTONE__CLIENTHANDLER_H_

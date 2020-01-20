@@ -17,7 +17,9 @@ int evaluatedNodes = 0;
     queue<State<E> *> queueBFS_TESTER; // TODO: delete me
 
 public:
+    virtual ~BFSAlgorithm() {
 
+    }
     BFSAlgorithm* clone() {
         return new BFSAlgorithm<S,E>();
     }
@@ -38,7 +40,6 @@ public:
         //any push need to update closed list that state was pushed to queue
         closed.insert(pair<State<E> *, State<E> *>(start, start));
 
-        int testingCounter = 0; //TODO: REMOVE ME
 
         //BFS algorithm
         while (goalWasntFound) {

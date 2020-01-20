@@ -1,3 +1,4 @@
+
 //
 // Created by asaf on 16/01/2020.
 //
@@ -15,141 +16,195 @@
 #include "AStarAlgorithm.h"
 
 class MatrixTester {
-public:
+  public:
 
-    void testSearcherPath(ISearcher<string,Vertex *> *searcher, Searchable<Vertex *> *searchable) {
+    void testSearcherPath(ISearcher<string, Vertex *> *searcher, Searchable<Vertex *> *searchable) {
 
-        if ((searcher->Search(searchable)) != "No Solution") {
+        if ((searcher->Search(searchable)) != "A2") {
             cout << searcher->Search(searchable) << endl;
         } else {
-            cout << "No Solution";
+            cout << "A3";
         }
-
     }
 
-    void testSearcher(ISearcher<string,Vertex *> *searcher, Searchable<Vertex *> *searchable) {
+    int testSearcher(ISearcher<string, Vertex *> *searcher, Searchable<Vertex *> *searchable, int printOption) {
 
-        if ((searcher->Search(searchable)) != "No Solution") {
-            cout << searcher->getEvaluatedNodes();
+        if (printOption == 1) {
+            if ((searcher->Search(searchable)) != "A4") {
+                //cout << searcher->getSolutionCost();
+            } else {
+                cout << "A5";
+            }
         } else {
-            cout << "No Solution";
+            if ((searcher->Search(searchable)) != "A6") {
+                cout <<searcher->Search(searchable);
+                //searcher->getEvaluatedNodes();
+            } else {
+                cout << "A7";
+            }
         }
 
+        return searcher->getEvaluatedNodes();
     }
 
-    void testAlgorithms() {
+
+    void testAlgorithms(int option) {
 
         string line;
 
+        int BfsAverage = 0, DfsAverge = 0, AstarAverge = 0, BestFSAverage = 0;
+        int BfsAverageCost = 0, DfsAvergeCost = 0, AstarAvergeCost = 0, BestFSAverageCost = 0;
+
+        const int numberOfIterations = 9; //NOTE: if you change loop change this as well
         //make test for each matrix file
-        for (int i = 10; i < 38; i += 3) {
+        //    for (int i = 10; i < 38; i += 3) {
 
-            string fileName = "Matrix" + to_string(i) + "x" + to_string(i) + ".txt";
+        string fileName = "Matrix" + to_string(10) + "x" + to_string(10) + ".txt";
 
-            // Read from the text file
-            ifstream MyReadFile(fileName);
+        // Read from the text file
+        ifstream MyReadFile(fileName);
 
-            vector<string> matrixLines;
-            // Use a while loop together with the getline() function to read the file line by line
-            while (getline(MyReadFile, line)) {
-                //create vector of lines
-                if (line == "end") {
-                    break;
-                }
-                matrixLines.push_back(line);
+        vector<string> matrixLines;
+        // Use a while loop together with the getline() function to read the file line by line
+        while (getline(MyReadFile, line)) {
+            //create vector of lines
+            if (line == "end") {
+                break;
             }
-
-            auto *matrixProblem = new MatrixProblem(matrixLines);
-
-            //BFS:
-            cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
-            auto *BFS = new BFSAlgorithm<string,Vertex*>();
-            cout << "BFS(";
-            testSearcher(BFS, matrixProblem);
-            cout << ")";
-
-
-            //DFS:
-            cout << ", DFS(";
-            auto *DFS = new DFSAlgorithm<string,Vertex *>();
-            testSearcher(DFS, matrixProblem);
-            cout << ")";
-
-
-            //BestFS:
-            cout << ", BestFS(";
-            auto *BestFS = new BestFSAlgorithm<string,Vertex *>();
-            testSearcher(BestFS, matrixProblem);
-            cout << ")";
-
-
-          //A*
-            cout << ", A*(";
-            auto *AStar = new AStarAlgorithm<string, Vertex*>();
-            testSearcher(AStar, matrixProblem);
-            cout << ")";
-            cout << endl;
-
-            // Close the file
-            MyReadFile.close();
+            matrixLines.push_back(line);
         }
 
-        //##########################################################################
-        //Printing solution:
+        auto *matrixProblem = new MatrixProblem(matrixLines);
 
-        //make test for each matrix file
-        for (int i = 10; i < 38; i += 3) {
+//            //BFS:
+        cout << "Matrix(" + to_string(10) + "x" + to_string(10) + "): ";
+        auto *BFS = new BFSAlgorithm<string, Vertex *>();
+        cout << "BFS(";
+        BfsAverage = BfsAverage + testSearcher(BFS, matrixProblem, option);
+        //BfsAverageCost += BFS->getSolutionCost();
+        cout << ")";
 
-            string fileName = "Matrix" + to_string(i) + "x" + to_string(i) + ".txt";
+//
+////            DFS:
+//            cout << ", DFS(";
+//            auto *DFS = new DFSAlgorithm<string, Vertex *>();
+//            DfsAverge = DfsAverge + testSearcher(DFS, matrixProblem, option);
+//            DfsAvergeCost += DFS->getSolutionCost();
+//            cout << ")";
+////
+//
+//            //BestFS:
+//            cout << ", BestFS(";
+//            auto *BestFS = new BestFSAlgorithm<string, Vertex *>();
+//            BestFSAverage = BestFSAverage + testSearcher(BestFS, matrixProblem, option);
+//            BestFSAverageCost += BestFS->getSolutionCost();
+//            cout << ")";
+//
+//
+//            //A*
+//            cout << ", A*(";
+//            auto *AStar = new AStarAlgorithm<string, Vertex *>();
+//            AstarAverge = AstarAverge + testSearcher(AStar, matrixProblem, option);
+//            AstarAvergeCost += AStar->getSolutionCost();
 
-            // Read from the text file
-            ifstream MyReadFile(fileName);
+        cout << ")";
+        cout << endl;;
+        // Close the file
+        MyReadFile.close();
+        //}
 
-            vector<string> matrixLines;
-            // Use a while loop together with the getline() function to read the file line by line
-            while (getline(MyReadFile, line)) {
-                //create vector of lines
-                if (line == "end") {
-                    break;
-                }
-                matrixLines.push_back(line);
+//        enum algoName {
+//            BFS,
+//            DFS,
+//            Astar,
+//            BestFS
+//        };
+
+        //calc average cost:
+        BfsAverageCost = BfsAverageCost / numberOfIterations;
+        DfsAvergeCost = DfsAvergeCost / numberOfIterations;
+        AstarAvergeCost = AstarAvergeCost / numberOfIterations;
+        BestFSAverageCost = BestFSAverageCost / numberOfIterations;
+
+
+/*
+        vector<int> costAverages = {BfsAverageCost, DfsAvergeCost, AstarAvergeCost, BestFSAverageCost};
+
+        //find algorithms with minumum costs
+        int flagLocationCost = 0;
+        int min = costAverages[0];
+        for (int k = 0; k < 4; ++k) {
+            if (costAverages[k] < min) {
+                min = costAverages[k];
+                flagLocationCost = k;
             }
-
-            auto *matrixProblem = new MatrixProblem(matrixLines);
-
-            //BFS:
-            cout << "Matrix(" + to_string(i) + "x" + to_string(i) + "): ";
-            auto *BFS = new BFSAlgorithm<string,Vertex *>();
-            cout << "BFS Path: ";
-            testSearcherPath(BFS, matrixProblem);
-            cout << "" << endl;
-
-
-            //DFS:
-            ISearcher<string,Vertex*> *DFS = new DFSAlgorithm<string,Vertex *>();
-            cout << "DFS Path: ";
-            testSearcherPath(DFS, matrixProblem);
-            cout << "" << endl;
-
-
-            //BestFS:
-            auto *BestFS = new BestFSAlgorithm<string,Vertex *>();
-            cout << "BestFS Path: ";
-            testSearcherPath(BestFS, matrixProblem);
-            cout << "" << endl;
-
-
-//          A*
-            auto *AStar = new AStarAlgorithm<string,Vertex*>();
-            cout << "A* Path: ";
-            testSearcherPath(AStar, matrixProblem);
-            cout << endl;
-
-            // Close the file
-            MyReadFile.close();
         }
 
 
+        //save all algorithms which got the min cost:
+        vector<algoName> sameCostAlgorithms;
+        for (int k = 0; k < 4; k++) {
+            if(costAverages[k] == min){
+             switch(k){
+                 case algoName::BFS :
+                     sameCostAlgorithms.push_back(algoName::BFS);
+                     break;
+                 case algoName::DFS:
+                     sameCostAlgorithms.push_back(algoName::DFS);
+                     break;
+                 case algoName::Astar:
+                     sameCostAlgorithms.push_back(algoName::Astar);
+                     break;
+                 case algoName::BestFS:
+                     sameCostAlgorithms.push_back(algoName::BestFS);
+                     break;
+                 default:
+                     break;
+             }
+            }
+        }
+*/
+
+        //get the algorithm with the minimal cost & the minimal evaluated nodes.
+
+
+
+        //calc averages of evaluated nodes
+        BfsAverage = BestFSAverage / numberOfIterations;
+        DfsAverge = DfsAverge / numberOfIterations;
+        AstarAverge = AstarAverge / numberOfIterations;
+        BestFSAverage = BestFSAverage / numberOfIterations;
+
+
+/*        vector<int> nodesAverages = {BfsAverage, DfsAverge, AstarAverge, BestFSAverage};
+        int flagLocation = 0;
+        int minNodes = nodesAverages[0];
+        for (int j = 0; j < 4; ++j) {
+            if (nodesAverages[j] < min) {
+                minNodes = nodesAverages[j];
+                flagLocation = j;
+            }
+        }
+
+        for (algoName i : sameCostAlgorithms){
+
+        }
+
+        //print the name of the best algorithm:
+        cout << "\nThe best algorithm has " + to_string() + "cost and " + to_string() +  "evaluated nodes and\n";*/
+
+        if (option == 1) {
+            cout << "\n\n";
+            cout << "~~~~~~ Averages ~~~~~~\n";
+            cout << "DFS average nodes: " + to_string(DfsAverge) + " | average cost: " + to_string(DfsAvergeCost) +
+                "\n";
+            cout << "BFS average nodes: " + to_string(BfsAverage) + " | average cost: " + to_string(BfsAverageCost) +
+                "\n";
+            cout << "BestFS average nodes: " + to_string(BestFSAverage) + " | average cost: " +
+                to_string(BestFSAverageCost) + "\n";
+            cout << "A* average nodes: " + to_string(AstarAverge) + " | average cost: " + to_string(AstarAvergeCost) +
+                "\n";
+        }
     }
 
 };

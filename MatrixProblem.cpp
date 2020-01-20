@@ -267,13 +267,11 @@ int MatrixProblem::getColumnNum(string row) {
 string MatrixProblem::returnSolutionPath(State<Vertex *> * state) {
     string buffer = "";
     string solution = "";
-    int i, j, cost;
+    int i, j;
     while(state->getCameFrom() != nullptr) {
         // calculating i,j to find where came form.
         i = state->GetState()->GetRow() - state->getCameFrom()->GetState()->GetRow();
         j= state->GetState()->GetColumn() - state->getCameFrom()->GetState()->GetColumn();
-        //calculating the cost of the move to current location
-        cost = state->getTotalCost() - state->getCameFrom()->getTotalCost();
 
         //means we went down in the algorithm
         if( i == 1) {
@@ -327,4 +325,15 @@ int MatrixProblem::calcHeuristic(State<Vertex *> *state) {
     //todo: check distance should be integer
     //returns the distance rounded and as an integer.
     return int(round(sqrt(pow((current.x - goal.x), 2) + pow((current.y - goal.y), 2))));
+}
+MatrixProblem::~MatrixProblem() {
+    delete startState;
+    delete goalState;
+    for (pair<pair<int,int>,State<Vertex*>*> s : alreadyCreatedStates) {
+        if (s.second != nullptr) {
+            delete s.second;
+        }
+    }
+
+
 }

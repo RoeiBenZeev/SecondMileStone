@@ -28,6 +28,7 @@ class MyTestClientHandler : public ClientHandler {
     MyTestClientHandler(Solver<MatrixProblem*,string> *s, CacheManager<string, string> *cm);
     void handleClient(int) override;
     ClientHandler *clone() override;
+    virtual ~MyTestClientHandler();
   private:
     Solver<MatrixProblem*, string> *solver;
     CacheManager<string, string> *cacheManager;

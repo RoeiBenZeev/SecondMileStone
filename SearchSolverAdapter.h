@@ -20,8 +20,9 @@ class SearchSolverAdapter : public Solver<P,S> {
 
         return searcher->Search(problem);
     }
+    virtual ~SearchSolverAdapter() {};
     //constructor
-    SearchSolverAdapter(ISearcher<S,Vertex*>* searcher) : searcher(searcher) {}
+    SearchSolverAdapter(ISearcher<S,Vertex*>* solver) : searcher(solver) {}
     Solver<P, S> *clone() override {
         ISearcher<S,Vertex*>* tempSearcher = searcher->clone();
         return new SearchSolverAdapter(tempSearcher);

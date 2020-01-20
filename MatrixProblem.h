@@ -45,6 +45,7 @@ class MatrixProblem : public Searchable<Vertex*>  {
     bool isGoalState(State<Vertex*>* state) override;
     vector<State<Vertex*>*> getAllPossibleStates(State<Vertex*>* state) override;
     MatrixProblem(vector<string> problemData);
+    virtual ~MatrixProblem();
 
     int getHeuristic(State<Vertex *> *state) ;
     string returnSolutionPath(State<Vertex*>* goalState);

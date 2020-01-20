@@ -31,9 +31,10 @@ class MySerialServer : public server_side::Server {
     void open(int, ClientHandler*) override;
     void stop();
     MySerialServer();
+    virtual ~MySerialServer();
 
   private:
-    static void start(ClientHandler*, int, sockaddr_in);
+    static void start(ClientHandler*, int);
 };
 
 #endif //SECONDMILESTONE__MYSERIALSERVER_H_

@@ -11,6 +11,7 @@ class Server {
   public:
     virtual void open(int, ClientHandler*) = 0;
     void virtual stop() = 0;
+    virtual ~Server() {};
 };
 }
 #endif //SECONDMILESTONE__SERVER_H_

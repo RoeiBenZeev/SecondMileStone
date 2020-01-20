@@ -3,17 +3,17 @@
 //
 
 #include "Vertex.h"
-Vertex::Vertex(int row, int column, int cost) : row(row), column(column), cost(cost) {}
+Vertex::Vertex(int row, int column, int cost) : vertexRow(row), vertexColumn(column), vertexCost(cost) {}
 
 int Vertex::GetRow() const {
-    return row;
+    return vertexRow;
 }
 int Vertex::GetColumn() const {
-    return column;
+    return vertexColumn;
 }
 int Vertex::GetCost() const {
-    return cost;
+    return vertexCost;
 }
 pair<int, int> Vertex::getLocation() {
-    return make_pair(row,column);
+    return make_pair(vertexRow,vertexColumn);
 }

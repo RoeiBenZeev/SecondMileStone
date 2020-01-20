@@ -62,7 +62,7 @@ void MySerialServer::open(int port, ClientHandler *ch) {
                 throw "-4";
             }
             //each client run in different thread.
-            thread clientThread(start, ch->clone(), client_socket, address);
+            thread clientThread(start, ch->clone(), client_socket);
             clientThread.detach();
         }
         //thread clientThread2(start, ch ,socketfd,address);
@@ -79,43 +79,14 @@ void MySerialServer::open(int port, ClientHandler *ch) {
 void MySerialServer::stop() {
     keepRun = false;
 }
-void MySerialServer::start(ClientHandler *ch, int client_socket, sockaddr_in address) {
+void MySerialServer::start(ClientHandler *ch, int client_socket) {
     //handle each client
     ch->handleClient(client_socket);
     //closing client socket after handling the problem
     close(client_socket);
-
-
-//    while (keepRun) {
-//        //making socket listen to the port
-//        if (listen(socketfd, 5) == -1) { //can also set to SOMAXCON (max connections)
-//            std::cerr << "Error during listening command" << std::endl;
-//            //return -3;
-//            throw "-3";
-//        } else {
-//            std::cout << "Server is now listening ..." << std::endl;
-//        }
-//        int addrlen = sizeof(address);
-//        //time out definition, if there is no connection for 10 seconds.
-//        struct timeval tv;
-//        tv.tv_sec = 180;
-//        setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
-//        // accepting a client
-//        int client_socket = accept(socketfd, (struct sockaddr *) &address,
-//                                   (socklen_t *) &addrlen);
-//
-//        cout << "server is now Connected" << endl;
-//
-//        if (client_socket == -1) {
-//            std::cerr << "Error accepting client" << std::endl;
-//            //return -4;
-//            throw "-4";
-//        }
-//
-//        ch->handleClient(client_socket);
-//        //the client socket is closed after handling the client.
-//        close(client_socket);
-//    }
 }
 
 MySerialServer::MySerialServer() {}
+MySerialServer::~MySerialServer() {
+
+}

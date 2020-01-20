@@ -37,7 +37,7 @@ class FileCacheManager : public CacheManager<P,S> {
     void insert(P, S);
     FileCacheManager(int);
     string get(P);
-
+    virtual ~FileCacheManager();
     void foreach(const function<void(S &)>);
 
 };
@@ -194,6 +194,10 @@ string FileCacheManager<P,S>::hashString(const P& key){
     snprintf(buf, sizeof buf, "%zu", hashedKey);
     string newKey(buf);
     return newKey;
+}
+template<typename P, typename S>
+FileCacheManager<P, S>::~FileCacheManager() {
+
 }
 
 #endif //SECONDMILESTONE__FILECACHEMANAGER_H_

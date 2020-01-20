@@ -88,6 +88,10 @@ ClientHandler *MyTestClientHandler::clone() {
     ClientHandler* temp = new MyTestClientHandler(tempSolver, cacheManager);
     return temp;
 }
+MyTestClientHandler::~MyTestClientHandler() {
+    delete solver;
+    delete cacheManager;
+}
 
 
 

@@ -10,7 +10,7 @@ class CacheManager {
   public:
     virtual void insert(P,S) = 0;
     //virtual CacheManager* clone() = 0;
-
+    virtual ~CacheManager() {};
     virtual S get(P) = 0;
 
 };

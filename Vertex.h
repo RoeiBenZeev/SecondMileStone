@@ -8,9 +8,9 @@
 using namespace std;
 class Vertex {
   private:
-    int row;
-    int column;
-    int cost;
+    int vertexRow;
+    int vertexColumn;
+    int vertexCost;
   public:
     Vertex(int row, int column, int cost);
     int GetRow() const;
