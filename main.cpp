@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Server.h"
 #include "MySerialServer.h"
-#include "MyTestClientHandler.h"
+#include "MyClientHandler.h"
 #include "StringReverser.h"
 #include "FileCacheManager.h"
 #include "State.h"
@@ -19,23 +19,23 @@ namespace boot {
 
         void main(int argc, char *argv[]) {
             //if we didnt get port as parameter
-            if(strlen(*argv) == 0) {
+            if(argc  > 1) {
                 Server *myServer = new MySerialServer();
                 Solver<MatrixProblem *, string> *solver =
-                    new SearchSolverAdapter<MatrixProblem *, string>(new BFSAlgorithm<string, Vertex *>());
+                    new SearchSolverAdapter<MatrixProblem *, string>(new BestFSAlgorithm<string, Vertex *>());
                 CacheManager<string, string>
-                    *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
-                ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
-                myServer->open(5600, clientHandler);
+                *cm = new FileCacheManager<string, string>(20);
+                ClientHandler *clientHandler = new MyClientHandler(solver, cm);
+                myServer->open(stoi(argv[1]), clientHandler);
             }
             //if we do get port as parameter
             else {
                 Server *myServer = new MySerialServer();
                 Solver<MatrixProblem*, string> *solver =
-                    new SearchSolverAdapter<MatrixProblem*,string>(new BFSAlgorithm<string,Vertex*>());
-                CacheManager<string, string> *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
-                ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
-                myServer->open(stoi(argv[argc-(argc-1)]),clientHandler);
+                    new SearchSolverAdapter<MatrixProblem*,string>(new AStarAlgorithm<string,Vertex*>());
+                CacheManager<string, string> *cm = new FileCacheManager<string, string>(20);
+                ClientHandler *clientHandler = new MyClientHandler(solver, cm);
+                myServer->open(5600,clientHandler);
             }
             //
 

@@ -54,7 +54,7 @@ public:
      */
     bool upDateQueue(State<E> *value, int newTotalCost) {
         //we update our items value.
-        //value->SetTotalCost(newTotalCost); //todo: was uncomment
+        value->SetTotalCost(newTotalCost);
         //we remove the item from the queue if there, and add to put in right place.
         auto it = std::find(this->c.begin(), this->c.end(), value);
         if (it != this->c.end()) {

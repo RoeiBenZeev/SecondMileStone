@@ -2,8 +2,8 @@
 // Created by roei on 12/01/2020.
 //
 
-#ifndef SECONDMILESTONE__MYTESTCLIENTHANDLER_H_
-#define SECONDMILESTONE__MYTESTCLIENTHANDLER_H_
+#ifndef SECONDMILESTONE__MYCLIENTHANDLER_H_
+#define SECONDMILESTONE__MYCLIENTHANDLER_H_
 
 #include "ClientHandler.h"
 #include "Solver.h"
@@ -23,16 +23,16 @@
 using namespace std;
 extern int threadcounter;
 
-class MyTestClientHandler : public ClientHandler {
+class MyClientHandler : public ClientHandler {
   public:
-    MyTestClientHandler(Solver<MatrixProblem*,string> *s, CacheManager<string, string> *cm);
+    MyClientHandler(Solver<MatrixProblem*, string> *s, CacheManager<string, string> *cm);
     void handleClient(int) override;
     ClientHandler *clone() override;
-    virtual ~MyTestClientHandler();
+    virtual ~MyClientHandler();
   private:
     Solver<MatrixProblem*, string> *solver;
     CacheManager<string, string> *cacheManager;
 
 };
 
-#endif //SECONDMILESTONE__MYTESTCLIENTHANDLER_H_
+#endif //SECONDMILESTONE__MYCLIENTHANDLER_H_

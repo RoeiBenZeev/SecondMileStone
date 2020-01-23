@@ -27,6 +27,9 @@ class SearchSolverAdapter : public Solver<P,S> {
         ISearcher<S,Vertex*>* tempSearcher = searcher->clone();
         return new SearchSolverAdapter(tempSearcher);
     }
+    virtual string toString() {
+        return searcher->toString();
+    }
 
 };
 

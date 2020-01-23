@@ -85,6 +85,11 @@ public:
     int getEvaluatedNodes() override {
         return evaluatedNodes;
     }
+
+    //return a string for this class.
+    string toString() override {
+        return "BFS";
+    }
 };
 
 #endif //SECONDMILESTONE__BFSALGORITHM_H_

@@ -22,7 +22,6 @@ class BestFSAlgorithm : public Searcher<S,E> {
         //first we initial our queue with start state.
         Searcher<S,E>::myPriorityQueue->push(problem->getInitialState());
         //we run while the queue is not empty.
-        int counter = 0;
         while(!Searcher<S,E>::myPriorityQueue->empty()) {
             // n is our algorithm buffer
             n = Searcher<S,E>::myPriorityQueue->top();
@@ -71,14 +70,18 @@ class BestFSAlgorithm : public Searcher<S,E> {
                 }
             }
         }
-        //todo delete me
-        //return "aaaaa";
+        return "No Solution";
     }
     /*
      * make a clone of this object.
      */
     ISearcher<S,E> *clone() override {
         return new BestFSAlgorithm<S,E>;
+    }
+
+    //return a string for this class.
+    string toString() override {
+        return "BestFS";
     }
 };
 

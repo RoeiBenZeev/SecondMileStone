@@ -3,13 +3,13 @@
 //
 
 #include <cstring>
-#include "MyTestClientHandler.h"
+#include "MyClientHandler.h"
 #include "SearchSolverAdapter.h"
 #include "BestFSAlgorithm.h"
 int threadcounter = 0;
 
 
-void MyTestClientHandler::handleClient(int clientSocket) {
+void MyClientHandler::handleClient(int clientSocket) {
     threadcounter +=1;
     cout << "Client connectd" << endl;
     vector<string> problemData;
@@ -19,7 +19,6 @@ void MyTestClientHandler::handleClient(int clientSocket) {
         char dataFromClient[1024] = {0};
         //get data from client.
         read(clientSocket, dataFromClient, 1024);
-        //cout << dataFromClient << std::flush;
         //making a string with out char array buffer
         string dataString(dataFromClient);
         key = key + dataString;
@@ -30,7 +29,6 @@ void MyTestClientHandler::handleClient(int clientSocket) {
         delimiter = '\r';
         pos = dataString.find(delimiter);
         dataString = dataString.substr(0, pos);
-        //cout << dataString << endl;
         //if client send end we will terminate the connection.
         if (dataString == "end") {
             break;
@@ -42,28 +40,20 @@ void MyTestClientHandler::handleClient(int clientSocket) {
         //add each line data from client to vector
         problemData.push_back(dataString);
     }
-    cout << "thread " +to_string(threadcounter) +" finished recive data" << endl;
 
-//  todo make this Solver Adapter with a problem object
+    //creating a problem object from the data we get.
     MatrixProblem* mProblem = new MatrixProblem(problemData);
-    cout << "thread " +to_string(threadcounter) +" have the problem" << endl;
-//    cout << BFS->Search(mProblem) << endl;
-//    SearchSolverAdapter<MatrixProblem,string>* sa =
-//        new SearchSolverAdapter<MatrixProblem,string>();
-    string solution;// = solver->solve(mProblem);
-//    //check if solution is in the database
+    string solution;
+    //check if solution is in the database
     try {
         //check if solution is in the cache .
-        cout << "thread " +to_string(threadcounter) +" try to find a solution in cache" << endl;
-        solution = cacheManager->get(mProblem->toString());
+        solution = cacheManager->get(mProblem->toString() + solver->toString());
         //if the solution is not in the data base we will solve it
     } catch (const char *e) {
         cout << e << endl;
-        cout << "thread " +to_string(threadcounter) +" try to solve the problem" << endl;
         solution = solver->solve(mProblem);
-        cout << "thread " +to_string(threadcounter) +" solved the problem" << endl;
         //inserting the new solution to the data base
-        cacheManager->insert(mProblem->toString(), solution);
+        cacheManager->insert(mProblem->toString() + solver->toString(), solution);
     }
     cout << solution << endl;
     //return the solution
@@ -77,18 +67,18 @@ void MyTestClientHandler::handleClient(int clientSocket) {
     }
 }
 
-MyTestClientHandler::MyTestClientHandler(Solver<MatrixProblem*, string> *s, CacheManager<string, string> *cm) {
+MyClientHandler::MyClientHandler(Solver<MatrixProblem*, string> *s, CacheManager<string, string> *cm) {
     this->solver = s;
     this->cacheManager = cm;
 }
-ClientHandler *MyTestClientHandler::clone() {
+ClientHandler *MyClientHandler::clone() {
     //deep clone solver field.
     Solver<MatrixProblem*,string>* tempSolver = solver->clone();
     //return new instance of class.
-    ClientHandler* temp = new MyTestClientHandler(tempSolver, cacheManager);
+    ClientHandler* temp = new MyClientHandler(tempSolver, cacheManager);
     return temp;
 }
-MyTestClientHandler::~MyTestClientHandler() {
+MyClientHandler::~MyClientHandler() {
     delete solver;
     delete cacheManager;
 }

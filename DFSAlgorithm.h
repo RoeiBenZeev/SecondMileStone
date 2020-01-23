@@ -65,15 +65,18 @@ public:
                 stackDfs.pop();
             }
         }
-        return "return statement should be here";
-        //TODO: !!!!!!!!!! RETURN A SOLUTION !!!!!!!!!!!!!
     }
-
+    //return all evaluaterd nodes
     int getEvaluatedNodes() override {
         return evaluatedNodes;
     }
+    //make a clone of this object.
     DFSAlgorithm* clone() {
         return new DFSAlgorithm<S,E>();
+    }
+    //return a string for this class.
+    string toString() override {
+        return "DFS";
     }
 
 };

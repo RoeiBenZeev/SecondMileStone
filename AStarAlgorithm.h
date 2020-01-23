@@ -84,38 +84,16 @@ public:
                     }
                 }
             }
-
-
-            //cout << counter << endl; //todo: remove me !
         }
-
-
-/*                //means that s is in closedMap , and we can skip
-                else if (itr != closedMap.end()) {
-                    continue;
-                }
-
-                    //if we get here , its means he is in the open queue and not in closedMap
-                else {
-                    //saving routs values to compare
-                    int prevTotalCost = s->getTotalCost();
-                    int newTotalCost = n->getTotalCost() + s->GetStateCost();
-                    //if newTotalCost is less then prev , we update our rout
-                    if (newTotalCost < prevTotalCost) {
-                        priorityQueue->upDateQueue(s, newTotalCost);
-                        //update we came to s from n
-                        s->setCameFrom(n);
-                    }
-                }
-
-            }
-        }*/
-        //todo delete me
-       // return "aaaaa";
+        return "No solution";
     }
 
     int getEvaluatedNodes() override {
         return this->evaluatedNodes;
+    }
+    //return a string for this class.
+    string toString() override {
+        return "AStar";
     }
 };
 

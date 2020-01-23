@@ -21,6 +21,9 @@ class Searcher : public ISearcher<S,E> {
         return this->evaluatedNodes;
     }
 
+    virtual string toString() = 0;
+
+
 };
 
 #endif //SECONDMILESTONE__SEARCHER_H_

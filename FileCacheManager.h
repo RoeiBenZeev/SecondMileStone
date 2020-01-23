@@ -138,7 +138,7 @@ string FileCacheManager<P,S>::get(P key) {
     if(this->containsKey(key)) {
         //we updated the LRU algorithm
         updateCache(key);
-        cout << "the solution is in the cache"<< std::flush;
+        cout << "the solution is in the cache memory"<< endl;
         //unlocking this scope
         mutex_lock.unlock();
         //return our key object
@@ -149,7 +149,7 @@ string FileCacheManager<P,S>::get(P key) {
         if(!reader || !reader.is_open()) {
             //unlocking this scope
             mutex_lock.unlock();
-            throw "No such object";
+            throw "Data not in files.";
         }
         string buffer;
         string solution = "";
