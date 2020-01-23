@@ -48,7 +48,7 @@ void MySerialServer::open(int port, ClientHandler *ch) {
             int addrlen = sizeof(address);
             //time out definition, if there is no connection for 10 seconds.
             struct timeval tv;
-            tv.tv_sec = 180;
+            tv.tv_sec = 120;
             setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
             // accepting a client
             int client_socket = accept(socketfd, (struct sockaddr *) &address,

@@ -18,13 +18,27 @@ namespace boot {
         Main() {};
 
         void main(int argc, char *argv[]) {
-            Server *myServer = new MySerialServer();
-            Solver<MatrixProblem*, string> *solver =
-                new SearchSolverAdapter<MatrixProblem*,string>(new BFSAlgorithm<string,Vertex*>());
-            CacheManager<string, string> *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
-            ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
+            //if we didnt get port as parameter
+            if(strlen(*argv) == 0) {
+                Server *myServer = new MySerialServer();
+                Solver<MatrixProblem *, string> *solver =
+                    new SearchSolverAdapter<MatrixProblem *, string>(new BFSAlgorithm<string, Vertex *>());
+                CacheManager<string, string>
+                    *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
+                ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
+                myServer->open(5600, clientHandler);
+            }
+            //if we do get port as parameter
+            else {
+                Server *myServer = new MySerialServer();
+                Solver<MatrixProblem*, string> *solver =
+                    new SearchSolverAdapter<MatrixProblem*,string>(new BFSAlgorithm<string,Vertex*>());
+                CacheManager<string, string> *cm = new FileCacheManager<string, string>(1); //todo: what should be the size?
+                ClientHandler *clientHandler = new MyTestClientHandler(solver, cm);
+                myServer->open(stoi(argv[argc-(argc-1)]),clientHandler);
+            }
+            //
 
-            myServer->open(5600,clientHandler);
         }
     };
 }
