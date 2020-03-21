@@ -1,6 +1,6 @@
 # Searching Server - Second Mile Stone 
 
-This searching server made my Roei Ben-Zee'v and Asaf Jerbi is a seraching server using various of searching algorithms to calculate the cheapest path from source state to target state.
+This searching server made by Roei Ben-Zee'v and Asaf Jerbi is a seraching server using various of searching algorithms to calculate the cheapest path from source state to target state.
 
 
 ## Why do we need this?
